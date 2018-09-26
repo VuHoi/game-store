@@ -52,10 +52,9 @@ namespace GameStore.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult GetUsers()
+        public IEnumerable<User> GetUsers()
         {
-            var users =  _context.Users;
-            return Ok(users);
+            return _context.Users;
         }
 
     }

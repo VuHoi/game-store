@@ -129,8 +129,6 @@ namespace GameStore.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<Guid?>("GameId");
-
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -156,8 +154,6 @@ namespace GameStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
 
@@ -167,6 +163,19 @@ namespace GameStore.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("GameStore.Model.UserGame", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<Guid>("GameId");
+
+                    b.HasKey("UserId", "GameId");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("UserGames");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -305,11 +314,17 @@ namespace GameStore.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("GameStore.Model.User", b =>
+            modelBuilder.Entity("GameStore.Model.UserGame", b =>
                 {
-                    b.HasOne("GameStore.Model.Game")
-                        .WithMany("Members")
-                        .HasForeignKey("GameId");
+                    b.HasOne("GameStore.Model.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("GameStore.Model.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -109,6 +109,9 @@ namespace GameStore.Controllers
             return BadRequest();
         }
 
+
+
+
         [HttpPost("refresh")]
         [AllowAnonymous]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)

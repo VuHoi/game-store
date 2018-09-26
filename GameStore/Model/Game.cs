@@ -11,7 +11,7 @@ namespace GameStore.Model
         public Guid Id { get; set; }
         public string Name { get; set; }
         public Publisher Publisher { get; set; }
-        public ICollection<User> Members { get; set; }
+        public ICollection<User> Members { get; }
         public float Rating { get; set; }
         public string Logo { get; set; }
         public string VideoUrl { get; set; }

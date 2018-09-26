@@ -27,7 +27,7 @@ namespace GameStore.Controllers
         [AllowAnonymous]
         public IEnumerable<Game> GetGames()
         {
-            return _context.Games.Include(g=>g.Categories);
+            return _context.Games.Include(g => g.Publisher).Include(g=>g.Categories);
         }
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
@@ -63,6 +63,20 @@ namespace GameStore.Controllers
             _context.SaveChangesAsync();
 
             return Ok(game);
+        }
+
+        [HttpPost("buy")]
+        [AllowAnonymous]
+        public IActionResult BuyGame([FromBody] UserGame userGame)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            _context.UserGames.Add(userGame);
+            _context.SaveChangesAsync();
+
+            return Ok(userGame);
         }
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]

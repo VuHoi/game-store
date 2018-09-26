@@ -9,7 +9,11 @@ namespace GameStore.Model
 {
     public class User : IdentityUser
     {
-       
 
+        public ICollection<Game> Games { get;  }
+        public User()
+        {
+            this.Games = new Collection<Game>();
+        }
     }
 }
