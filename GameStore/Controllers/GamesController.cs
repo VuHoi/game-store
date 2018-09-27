@@ -27,7 +27,7 @@ namespace GameStore.Controllers
         [AllowAnonymous]
         public IEnumerable<Game> GetGames()
         {
-            return _context.Games.Include(g => g.Publisher).Include(g=>g.Categories);
+            return _context.Games.Include(g=>g.Categories);
         }
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
