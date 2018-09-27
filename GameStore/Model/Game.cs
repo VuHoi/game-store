@@ -10,6 +10,7 @@ namespace GameStore.Model
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public Guid PublisherId { get; set; }
         public Publisher Publisher { get; set; }
         public ICollection<User> Members { get; }
         public float Rating { get; set; }
