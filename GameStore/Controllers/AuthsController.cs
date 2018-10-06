@@ -90,7 +90,7 @@ namespace GameStore.Controllers
                         await RemoveRefreshToken(refreshToken);
                     }
 
-                    var refToken = GenerateRefreshToken(Guid.NewGuid().ToString(), GetRefreshTokenExpire());
+                    var refToken = GenerateRefreshToken(Guid.NewGuid(), GetRefreshTokenExpire());
 
                     refreshToken = new RefreshToken
                     {
@@ -133,7 +133,7 @@ namespace GameStore.Controllers
 
                         {
                             var token = GenerateAccessToken(user, Guid.NewGuid().ToString(), GetAccessTokenExpire());
-                            var refreshToken = GenerateRefreshToken(Guid.NewGuid().ToString(), GetRefreshTokenExpire());
+                            var refreshToken = GenerateRefreshToken(Guid.NewGuid(), GetRefreshTokenExpire());
 
                             var jwtWriter = new JwtSecurityTokenHandler();
 
@@ -186,9 +186,9 @@ namespace GameStore.Controllers
             return token;
         }
 
-        private JwtSecurityToken GenerateRefreshToken(string guid, DateTime expire)
+        private JwtSecurityToken GenerateRefreshToken(Guid guid, DateTime expire)
         {
-            var claims = new[] { new Claim(JwtRegisteredClaimNames.Jti, guid) };
+            var claims = new[] { new Claim(JwtRegisteredClaimNames.Jti, guid.ToString()) };
 
             var token = new JwtSecurityToken
             (

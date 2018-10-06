@@ -10,6 +10,8 @@ namespace GameStore.Model
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Image { get; set; }
+        public Game Game { get; set; }
+        public Guid GameId { get; set; }
         public Category()
         {
             Id = Guid.NewGuid();
