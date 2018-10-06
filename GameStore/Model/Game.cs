@@ -18,7 +18,7 @@ namespace GameStore.Model
         public string Logo { get; set; }
         public string VideoUrl { get; set; }
         public string Content { get; set; }
-        public ICollection<Category> Categories { get; set; }
+        public ICollection<CategoryGame> Categories { get; set; }
         public DateTime PurchaseDate { get; set; }
         public float Price { get; set; }
         public ICollection<CodeFree> FreeCodes { get; set; }
@@ -30,7 +30,7 @@ namespace GameStore.Model
             Members = new Collection<UserGame>();
             FavoriteMembers = new Collection<WishGame>();
             FreeCodes = new Collection<CodeFree>();
-            Categories = new Collection<Category>();
+            Categories = new Collection<CategoryGame>();
             PurchaseDate= DateTime.Now;
         }
     }

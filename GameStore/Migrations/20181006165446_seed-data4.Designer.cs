@@ -4,14 +4,16 @@ using GameStore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GameStore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181006165446_seed-data4")]
+    partial class seeddata4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,11 +45,6 @@ namespace GameStore.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("Role");
-
-                    b.HasData(
-                        new { Id = new Guid("8345e32c-1313-475b-9e13-380bf2075461"), ConcurrencyStamp = "User", Description = "Limited Permission", Name = "User", NormalizedName = "User" },
-                        new { Id = new Guid("e29d9e04-6d19-45d7-8953-59b18124ef68"), ConcurrencyStamp = "Admin", Description = "Full Permission", Name = "Admin", NormalizedName = "Admin" }
-                    );
                 });
 
             modelBuilder.Entity("GameStore.Model.Category", b =>
@@ -64,11 +61,11 @@ namespace GameStore.Migrations
                     b.ToTable("Categories");
 
                     b.HasData(
-                        new { Id = new Guid("6840109d-2440-45bf-ac28-9fd544ec2172"), Image = "Url Image Here", Title = "Title here" },
-                        new { Id = new Guid("b2d90441-d617-45b6-932b-a74e0be41b25"), Image = "Url Image Here", Title = "Title here" },
-                        new { Id = new Guid("77da9e79-80af-4a35-b507-78acfbfc7007"), Image = "Url Image Here", Title = "Title here" },
-                        new { Id = new Guid("e800efe7-88e7-4957-ae9b-73cf81b21308"), Image = "Url Image Here", Title = "Title here" },
-                        new { Id = new Guid("6c481ca2-c3ab-417f-9118-71b5fd04ca96"), Image = "Url Image Here", Title = "Title here" }
+                        new { Id = new Guid("d3f13b61-de3c-435e-80c6-0a801a564f0e"), Image = "Url Image Here", Title = "Title here" },
+                        new { Id = new Guid("c9166c80-8ed1-4979-89c1-6a99a93838ec"), Image = "Url Image Here", Title = "Title here" },
+                        new { Id = new Guid("e3a1676b-39fb-4e97-8a14-462fcfd9c57e"), Image = "Url Image Here", Title = "Title here" },
+                        new { Id = new Guid("dd3988da-2dbc-485f-b8c0-2d9a64d906ec"), Image = "Url Image Here", Title = "Title here" },
+                        new { Id = new Guid("a4f047f8-a672-435b-aee8-956c72ecfd8d"), Image = "Url Image Here", Title = "Title here" }
                     );
                 });
 
@@ -85,11 +82,11 @@ namespace GameStore.Migrations
                     b.ToTable("CategoryGames");
 
                     b.HasData(
-                        new { GameId = new Guid("b040ff96-6537-4768-b8c5-729979993113"), CategoryId = new Guid("6840109d-2440-45bf-ac28-9fd544ec2172") },
-                        new { GameId = new Guid("1eda8992-e858-4167-86e0-b32ee72667ff"), CategoryId = new Guid("b2d90441-d617-45b6-932b-a74e0be41b25") },
-                        new { GameId = new Guid("df203216-f420-4ecf-8265-bf267cb65449"), CategoryId = new Guid("77da9e79-80af-4a35-b507-78acfbfc7007") },
-                        new { GameId = new Guid("d3c6d9db-f60a-4a61-ba41-308c667f2a16"), CategoryId = new Guid("e800efe7-88e7-4957-ae9b-73cf81b21308") },
-                        new { GameId = new Guid("4a0a0fae-60ac-4c8a-8307-ec26234ff60f"), CategoryId = new Guid("6c481ca2-c3ab-417f-9118-71b5fd04ca96") }
+                        new { GameId = new Guid("cfcdda73-8c5e-41ae-9bc3-014056ec97c5"), CategoryId = new Guid("d3f13b61-de3c-435e-80c6-0a801a564f0e") },
+                        new { GameId = new Guid("d5388300-cba4-400b-9bcf-400006c588d4"), CategoryId = new Guid("c9166c80-8ed1-4979-89c1-6a99a93838ec") },
+                        new { GameId = new Guid("24e33b59-091a-4017-87d6-9d7d41dfa877"), CategoryId = new Guid("e3a1676b-39fb-4e97-8a14-462fcfd9c57e") },
+                        new { GameId = new Guid("5c476cd6-6522-4035-91a8-30c9d91d0f75"), CategoryId = new Guid("dd3988da-2dbc-485f-b8c0-2d9a64d906ec") },
+                        new { GameId = new Guid("93603c77-60a0-4bf3-baf5-b2c8d6ad78cd"), CategoryId = new Guid("a4f047f8-a672-435b-aee8-956c72ecfd8d") }
                     );
                 });
 
@@ -109,11 +106,11 @@ namespace GameStore.Migrations
                     b.ToTable("CodeFrees");
 
                     b.HasData(
-                        new { Id = new Guid("d0fedc90-6956-41a3-9ed9-b566dc08f4d5"), Code = "6ff0f86a-563c-4c4d-ab44-e00a4cd62794", GameId = new Guid("b040ff96-6537-4768-b8c5-729979993113") },
-                        new { Id = new Guid("6124c19a-1c94-4acf-a44c-fa77dc6494f2"), Code = "8dd80a6b-a401-4214-9243-a4d4a7d84587", GameId = new Guid("1eda8992-e858-4167-86e0-b32ee72667ff") },
-                        new { Id = new Guid("77adce59-362a-491e-a769-d5702d6ee784"), Code = "5ea4ef9c-aca4-4aae-bd51-088e6f8ccd2f", GameId = new Guid("df203216-f420-4ecf-8265-bf267cb65449") },
-                        new { Id = new Guid("1ef9dfc7-4c98-4f67-ab3a-f47dda122c24"), Code = "75db4e4a-b9be-43e4-b541-d836c7a297fa", GameId = new Guid("d3c6d9db-f60a-4a61-ba41-308c667f2a16") },
-                        new { Id = new Guid("699cb3c4-9840-4977-8d87-6b6abc02db50"), Code = "b02ccb71-52f3-497b-950d-100048743a6b", GameId = new Guid("4a0a0fae-60ac-4c8a-8307-ec26234ff60f") }
+                        new { Id = new Guid("9a3b76ff-a103-4f2e-84ac-995b28cd439e"), Code = "c1939839-7361-47f3-b13c-56c8afea2f6c", GameId = new Guid("cfcdda73-8c5e-41ae-9bc3-014056ec97c5") },
+                        new { Id = new Guid("e84bf229-0a4b-49c0-9aba-6f42ff92060b"), Code = "c904a8c2-1848-41c9-b2d9-0e56cb083934", GameId = new Guid("d5388300-cba4-400b-9bcf-400006c588d4") },
+                        new { Id = new Guid("b78265a4-efcb-45c0-912e-9e36e47ad6aa"), Code = "8fcf90b6-bc5a-47ed-b992-fcadc5345af6", GameId = new Guid("24e33b59-091a-4017-87d6-9d7d41dfa877") },
+                        new { Id = new Guid("86b221e8-3ed9-4f08-8990-82ba4ecbd7cc"), Code = "11a2cefe-eeb2-41f1-80ad-f85b69c2c55e", GameId = new Guid("5c476cd6-6522-4035-91a8-30c9d91d0f75") },
+                        new { Id = new Guid("4926628a-8639-4048-a3e3-44ff6cc1aa6e"), Code = "49ee4ce0-2d11-4c1a-a20d-fedf20e841df", GameId = new Guid("93603c77-60a0-4bf3-baf5-b2c8d6ad78cd") }
                     );
                 });
 
@@ -145,11 +142,11 @@ namespace GameStore.Migrations
                     b.ToTable("Games");
 
                     b.HasData(
-                        new { Id = new Guid("b040ff96-6537-4768-b8c5-729979993113"), Content = "Good Game", Logo = "URL Logo here", Name = "Name Of Game", Price = 100000f, PublisherId = new Guid("18c5ad2f-b0df-496f-8f6c-8cb075db28f1"), PurchaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Rating = 4.5f, VideoUrl = "URL Video here" },
-                        new { Id = new Guid("1eda8992-e858-4167-86e0-b32ee72667ff"), Content = "Good Game", Logo = "URL Logo here", Name = "Name Of Game", Price = 100000f, PublisherId = new Guid("cf44c3ca-6689-492e-8c99-96619ab3f215"), PurchaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Rating = 4.5f, VideoUrl = "URL Video here" },
-                        new { Id = new Guid("df203216-f420-4ecf-8265-bf267cb65449"), Content = "Good Game", Logo = "URL Logo here", Name = "Name Of Game", Price = 100000f, PublisherId = new Guid("425d69de-43a5-4584-b509-b6ba55649b12"), PurchaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Rating = 4.5f, VideoUrl = "URL Video here" },
-                        new { Id = new Guid("d3c6d9db-f60a-4a61-ba41-308c667f2a16"), Content = "Good Game", Logo = "URL Logo here", Name = "Name Of Game", Price = 100000f, PublisherId = new Guid("4c873a1a-8d45-4b9d-aee5-514d9c5562b4"), PurchaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Rating = 4.5f, VideoUrl = "URL Video here" },
-                        new { Id = new Guid("4a0a0fae-60ac-4c8a-8307-ec26234ff60f"), Content = "Good Game", Logo = "URL Logo here", Name = "Name Of Game", Price = 100000f, PublisherId = new Guid("f8b0f5e0-bf11-4a1d-9413-5d9e5203e114"), PurchaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Rating = 4.5f, VideoUrl = "URL Video here" }
+                        new { Id = new Guid("cfcdda73-8c5e-41ae-9bc3-014056ec97c5"), Content = "Good Game", Logo = "URL Logo here", Name = "Name Of Game", Price = 100000f, PublisherId = new Guid("69eaa476-5353-411d-9173-5a93cbc4ffff"), PurchaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Rating = 4.5f, VideoUrl = "URL Video here" },
+                        new { Id = new Guid("d5388300-cba4-400b-9bcf-400006c588d4"), Content = "Good Game", Logo = "URL Logo here", Name = "Name Of Game", Price = 100000f, PublisherId = new Guid("b0b64c48-3b98-4134-b961-07f5ab6781db"), PurchaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Rating = 4.5f, VideoUrl = "URL Video here" },
+                        new { Id = new Guid("24e33b59-091a-4017-87d6-9d7d41dfa877"), Content = "Good Game", Logo = "URL Logo here", Name = "Name Of Game", Price = 100000f, PublisherId = new Guid("04f3c4a5-5896-4234-a325-163b6df11147"), PurchaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Rating = 4.5f, VideoUrl = "URL Video here" },
+                        new { Id = new Guid("5c476cd6-6522-4035-91a8-30c9d91d0f75"), Content = "Good Game", Logo = "URL Logo here", Name = "Name Of Game", Price = 100000f, PublisherId = new Guid("e190cd32-f138-4249-8dbe-7e017671bebe"), PurchaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Rating = 4.5f, VideoUrl = "URL Video here" },
+                        new { Id = new Guid("93603c77-60a0-4bf3-baf5-b2c8d6ad78cd"), Content = "Good Game", Logo = "URL Logo here", Name = "Name Of Game", Price = 100000f, PublisherId = new Guid("a31ff7cd-e0ce-468a-9ac6-b79339f496fd"), PurchaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Rating = 4.5f, VideoUrl = "URL Video here" }
                     );
                 });
 
@@ -169,12 +166,12 @@ namespace GameStore.Migrations
                     b.ToTable("Publishers");
 
                     b.HasData(
-                        new { Id = new Guid("18c5ad2f-b0df-496f-8f6c-8cb075db28f1"), Money = 10000000, Name = "Name here", Reliability = 5 },
-                        new { Id = new Guid("cf44c3ca-6689-492e-8c99-96619ab3f215"), Money = 10000000, Name = "Name here", Reliability = 5 },
-                        new { Id = new Guid("425d69de-43a5-4584-b509-b6ba55649b12"), Money = 10000000, Name = "Name here", Reliability = 5 },
-                        new { Id = new Guid("4c873a1a-8d45-4b9d-aee5-514d9c5562b4"), Money = 10000000, Name = "Name here", Reliability = 5 },
-                        new { Id = new Guid("f8b0f5e0-bf11-4a1d-9413-5d9e5203e114"), Money = 10000000, Name = "Name here", Reliability = 5 },
-                        new { Id = new Guid("e1acce29-31b0-4a9b-8772-f82adc28cd2e"), Money = 10000000, Name = "Name here", Reliability = 5 }
+                        new { Id = new Guid("69eaa476-5353-411d-9173-5a93cbc4ffff"), Money = 10000000, Name = "Name here", Reliability = 5 },
+                        new { Id = new Guid("b0b64c48-3b98-4134-b961-07f5ab6781db"), Money = 10000000, Name = "Name here", Reliability = 5 },
+                        new { Id = new Guid("04f3c4a5-5896-4234-a325-163b6df11147"), Money = 10000000, Name = "Name here", Reliability = 5 },
+                        new { Id = new Guid("e190cd32-f138-4249-8dbe-7e017671bebe"), Money = 10000000, Name = "Name here", Reliability = 5 },
+                        new { Id = new Guid("a31ff7cd-e0ce-468a-9ac6-b79339f496fd"), Money = 10000000, Name = "Name here", Reliability = 5 },
+                        new { Id = new Guid("dd54be91-c39e-4819-974e-f469375f94e4"), Money = 10000000, Name = "Name here", Reliability = 5 }
                     );
                 });
 
@@ -251,11 +248,11 @@ namespace GameStore.Migrations
                     b.ToTable("User");
 
                     b.HasData(
-                        new { Id = new Guid("0e388fb6-18ba-4582-b3e1-61545fe5c963"), AccessFailedCount = 0, ConcurrencyStamp = "3d03b718-1ea8-4fe0-9ae5-13f9438d6ab6", Email = "Email@gmail.com", EmailConfirmed = false, FullName = "Full Name", Hobbies = "Hobbies", LockoutEnabled = false, PasswordHash = "Thatvuhai_7595", PhoneNumber = "93098509238098523", PhoneNumberConfirmed = false, TwoFactorEnabled = false, UserName = "UserName" },
-                        new { Id = new Guid("f59f9dea-1a39-4a66-8ff8-7c6d9020dd92"), AccessFailedCount = 0, ConcurrencyStamp = "6a553f39-da7d-4c81-be80-6709b61c13f1", Email = "Email1@gmail.com", EmailConfirmed = false, FullName = "Full Name", Hobbies = "Hobbies", LockoutEnabled = false, PasswordHash = "Thatvuhai_7595", PhoneNumber = "93098509228098523", PhoneNumberConfirmed = false, TwoFactorEnabled = false, UserName = "UserName1" },
-                        new { Id = new Guid("32161737-43fd-4424-a5b6-ee05333e6eed"), AccessFailedCount = 0, ConcurrencyStamp = "17a09956-88ad-4b5a-85dc-d4cb2858c440", Email = "Email2@gmail.com", EmailConfirmed = false, FullName = "Full Name", Hobbies = "Hobbies", LockoutEnabled = false, PasswordHash = "Thatvuhai_7595", PhoneNumber = "93098559238098523", PhoneNumberConfirmed = false, TwoFactorEnabled = false, UserName = "UserName2" },
-                        new { Id = new Guid("49002caa-0090-46d7-8056-be15157b2298"), AccessFailedCount = 0, ConcurrencyStamp = "847bb3fe-e334-40f7-9dbd-7b29c9f59655", Email = "Email3@gmail.com", EmailConfirmed = false, FullName = "Full Name", Hobbies = "Hobbies", LockoutEnabled = false, PasswordHash = "Thatvuhai_7595", PhoneNumber = "93098609238098523", PhoneNumberConfirmed = false, TwoFactorEnabled = false, UserName = "UserName3" },
-                        new { Id = new Guid("b5175c1e-3f38-4322-8487-4b67b99c7855"), AccessFailedCount = 0, ConcurrencyStamp = "c0d32ca0-2f86-4229-8d92-e67fc6473c79", Email = "Email4@gmail.com", EmailConfirmed = false, FullName = "Full Name", Hobbies = "Hobbies", LockoutEnabled = false, PasswordHash = "Thatvuhai_7595", PhoneNumber = "93098509738098523", PhoneNumberConfirmed = false, TwoFactorEnabled = false, UserName = "UserName4" }
+                        new { Id = new Guid("da01bbd0-b53b-46d3-9d3b-d96b5b1afc5f"), AccessFailedCount = 0, ConcurrencyStamp = "2a7182fd-e46c-4935-a5ab-8be598c35e0c", Email = "Email@gmail.com", EmailConfirmed = false, FullName = "Full Name", Hobbies = "Hobbies", LockoutEnabled = false, PasswordHash = "Thatvuhai_7595", PhoneNumber = "93098509238098523", PhoneNumberConfirmed = false, TwoFactorEnabled = false, UserName = "UserName" },
+                        new { Id = new Guid("3554047b-d871-4a94-b300-55f2beb54050"), AccessFailedCount = 0, ConcurrencyStamp = "28f5349e-58a2-4ff3-aa72-fcd0398a6362", Email = "Email1@gmail.com", EmailConfirmed = false, FullName = "Full Name", Hobbies = "Hobbies", LockoutEnabled = false, PasswordHash = "Thatvuhai_7595", PhoneNumber = "93098509228098523", PhoneNumberConfirmed = false, TwoFactorEnabled = false, UserName = "UserName1" },
+                        new { Id = new Guid("93556b6e-ba6f-4770-8da6-525f9f4ef6a6"), AccessFailedCount = 0, ConcurrencyStamp = "53247c4b-9049-455d-9179-357b23f0e629", Email = "Email2@gmail.com", EmailConfirmed = false, FullName = "Full Name", Hobbies = "Hobbies", LockoutEnabled = false, PasswordHash = "Thatvuhai_7595", PhoneNumber = "93098559238098523", PhoneNumberConfirmed = false, TwoFactorEnabled = false, UserName = "UserName2" },
+                        new { Id = new Guid("e16a732e-5f68-456d-96b5-681142bb3ac1"), AccessFailedCount = 0, ConcurrencyStamp = "06d518af-6616-49f4-883c-c04aca8f2751", Email = "Email3@gmail.com", EmailConfirmed = false, FullName = "Full Name", Hobbies = "Hobbies", LockoutEnabled = false, PasswordHash = "Thatvuhai_7595", PhoneNumber = "93098609238098523", PhoneNumberConfirmed = false, TwoFactorEnabled = false, UserName = "UserName3" },
+                        new { Id = new Guid("edd42a5b-0046-4331-ab0c-e02a26bceedd"), AccessFailedCount = 0, ConcurrencyStamp = "55094df8-70c3-401d-904a-bfc05e9ffe71", Email = "Email4@gmail.com", EmailConfirmed = false, FullName = "Full Name", Hobbies = "Hobbies", LockoutEnabled = false, PasswordHash = "Thatvuhai_7595", PhoneNumber = "93098509738098523", PhoneNumberConfirmed = false, TwoFactorEnabled = false, UserName = "UserName4" }
                     );
                 });
 
@@ -272,11 +269,11 @@ namespace GameStore.Migrations
                     b.ToTable("UserGames");
 
                     b.HasData(
-                        new { UserId = new Guid("0e388fb6-18ba-4582-b3e1-61545fe5c963"), GameId = new Guid("b040ff96-6537-4768-b8c5-729979993113") },
-                        new { UserId = new Guid("f59f9dea-1a39-4a66-8ff8-7c6d9020dd92"), GameId = new Guid("1eda8992-e858-4167-86e0-b32ee72667ff") },
-                        new { UserId = new Guid("32161737-43fd-4424-a5b6-ee05333e6eed"), GameId = new Guid("df203216-f420-4ecf-8265-bf267cb65449") },
-                        new { UserId = new Guid("49002caa-0090-46d7-8056-be15157b2298"), GameId = new Guid("d3c6d9db-f60a-4a61-ba41-308c667f2a16") },
-                        new { UserId = new Guid("b5175c1e-3f38-4322-8487-4b67b99c7855"), GameId = new Guid("4a0a0fae-60ac-4c8a-8307-ec26234ff60f") }
+                        new { UserId = new Guid("da01bbd0-b53b-46d3-9d3b-d96b5b1afc5f"), GameId = new Guid("cfcdda73-8c5e-41ae-9bc3-014056ec97c5") },
+                        new { UserId = new Guid("3554047b-d871-4a94-b300-55f2beb54050"), GameId = new Guid("d5388300-cba4-400b-9bcf-400006c588d4") },
+                        new { UserId = new Guid("93556b6e-ba6f-4770-8da6-525f9f4ef6a6"), GameId = new Guid("24e33b59-091a-4017-87d6-9d7d41dfa877") },
+                        new { UserId = new Guid("e16a732e-5f68-456d-96b5-681142bb3ac1"), GameId = new Guid("5c476cd6-6522-4035-91a8-30c9d91d0f75") },
+                        new { UserId = new Guid("edd42a5b-0046-4331-ab0c-e02a26bceedd"), GameId = new Guid("93603c77-60a0-4bf3-baf5-b2c8d6ad78cd") }
                     );
                 });
 
@@ -291,14 +288,6 @@ namespace GameStore.Migrations
                     b.HasIndex("GameId");
 
                     b.ToTable("WishGame");
-
-                    b.HasData(
-                        new { UserId = new Guid("0e388fb6-18ba-4582-b3e1-61545fe5c963"), GameId = new Guid("b040ff96-6537-4768-b8c5-729979993113") },
-                        new { UserId = new Guid("f59f9dea-1a39-4a66-8ff8-7c6d9020dd92"), GameId = new Guid("1eda8992-e858-4167-86e0-b32ee72667ff") },
-                        new { UserId = new Guid("32161737-43fd-4424-a5b6-ee05333e6eed"), GameId = new Guid("df203216-f420-4ecf-8265-bf267cb65449") },
-                        new { UserId = new Guid("49002caa-0090-46d7-8056-be15157b2298"), GameId = new Guid("d3c6d9db-f60a-4a61-ba41-308c667f2a16") },
-                        new { UserId = new Guid("b5175c1e-3f38-4322-8487-4b67b99c7855"), GameId = new Guid("4a0a0fae-60ac-4c8a-8307-ec26234ff60f") }
-                    );
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
