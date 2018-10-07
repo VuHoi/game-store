@@ -24,7 +24,8 @@ namespace GameStore.Mapping.ProfileMap
             CreateMap<UserDTOs, User>()
                 .ForMember(g => g.Email, opt => opt.Ignore())
                 .ForMember(g => g.PhoneNumber, opt => opt.Ignore());
-            CreateMap<RegisterDTOs, User>();
+            CreateMap<RegisterDTOs, User>()
+               .ForMember(g => g.UserName, opt => opt.MapFrom(u=>u.Email));
             CreateMap<User, RegisterDTOs>();
         }
     }

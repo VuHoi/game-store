@@ -17,9 +17,16 @@ namespace GameStore.DTOs
         [StringLength(50, ErrorMessage = "Password must not have longer than 50 characters.")]
         public string Password { get; set; }
 
-        [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        [StringLength(50, ErrorMessage = "Password must not have longer than 50 characters.")]
-        public string ConfirmPassword { get; set; }
+        [StringLength(50, ErrorMessage = "Hobbies must not have longer than 50 characters.")]
+        public string Hobbies { get; set; }
+
+        [StringLength(50, ErrorMessage = "FullName must not have longer than 50 characters.")]
+        public string FullName { get; set; }
+
+        [StringLength(50, ErrorMessage = "FullName must not have longer than 50 characters.")]
+        public string PhoneNumber { get; set; }
+
+        [StringLength(50, ErrorMessage = "UserName must not have longer than 50 characters.")]
+        public string UserName { get; set; }
     }
 }

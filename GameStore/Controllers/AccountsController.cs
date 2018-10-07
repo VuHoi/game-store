@@ -37,7 +37,7 @@ namespace GameStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = register.Email, Email = register.Email };
+                var user = _mapper.Map<RegisterDTOs, User>(register);
                 var result = await _userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {
