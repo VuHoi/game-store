@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GameStore.Interfaces
 {
-    public interface ICategoryRepository
+    public interface IGameRepository
     {
     }
 }
