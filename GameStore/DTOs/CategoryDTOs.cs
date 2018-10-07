@@ -7,5 +7,9 @@ namespace GameStore.DTOs
 {
     public class CategoryDTOs
     {
+        public Guid Id { get; set; }
+        public string Title { get; set; }
+        public string Image { get; set; }
+        public ICollection<GameDTOs> Games { get; set; }
     }
 }
