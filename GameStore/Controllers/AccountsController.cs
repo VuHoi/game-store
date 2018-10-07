@@ -1,4 +1,7 @@
-﻿using GameStore.Data;
+﻿using AutoMapper;
+using GameStore.Common;
+using GameStore.Data;
+using GameStore.DTOs;
 using GameStore.Model;
 using GameStore.Model.Resource;
 using Microsoft.AspNetCore.Authorization;
@@ -19,16 +22,18 @@ namespace GameStore.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ApplicationDbContext _context;
-        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDbContext context)
+        private readonly IMapper _mapper;
+        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDbContext context, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody] Register register)
+        public async Task<IActionResult> Register([FromBody] RegisterDTOs register)
         {
             if (ModelState.IsValid)
             {
@@ -52,9 +57,14 @@ namespace GameStore.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<User> GetUsers()
+        public async Task<IServiceResult> GetUsers()
         {
-            return _context.Users;
+            var users = await _context.Users
+                .Include(u=>u.WishGames)
+                .ThenInclude(g => g.Game)
+                .Include(u=>u.Games).ToListAsync();
+            var usersDto = _mapper.Map<IEnumerable<User>, IEnumerable<UserDTOs>>(users);
+            return new ServiceResult(payload: usersDto);
         }
 
     }

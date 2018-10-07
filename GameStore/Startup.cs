@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using GameStore.Data;
 using GameStore.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -68,6 +69,8 @@ namespace GameStore
                     return Task.CompletedTask;
                 };
             });
+
+            services.AddAutoMapper();
             services.AddMvc();
         }
 

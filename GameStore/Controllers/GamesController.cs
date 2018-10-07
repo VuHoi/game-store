@@ -1,4 +1,7 @@
-﻿using GameStore.Data;
+﻿using AutoMapper;
+using GameStore.Common;
+using GameStore.Data;
+using GameStore.DTOs;
 using GameStore.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -16,19 +19,34 @@ namespace GameStore.Controllers
     public class GamesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public GamesController(ApplicationDbContext context)
+        public GamesController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<Game> GetGames()
+        public async Task<IServiceResult> GetGames()
         {
-            return _context.Games;
+            var games = await _context.Games
+                .Include(g=>g.Members)
+                .ThenInclude(m => m.User)
+                .Include(g=>g.FavoriteMembers)
+                .ThenInclude(m => m.User)
+                .Include(g=>g.Categories)
+                .ThenInclude(c => c.Category)
+                .Include(g => g.Publisher)
+                .ToListAsync();
+            Console.WriteLine(games);
+            Console.WriteLine("sss");
+            var gamesDto = _mapper.Map<IEnumerable<Game>, IEnumerable<GameDTOs>>(games);
+            return new ServiceResult(payload: gamesDto);
         }
+       
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         [HttpGet("{id}")]

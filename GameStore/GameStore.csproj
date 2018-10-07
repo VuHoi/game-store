@@ -4,6 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.1">
@@ -16,13 +17,14 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Mapping\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Implementations\" />
     <Folder Include="Exceptions\" />
     <Folder Include="DataAnnotations\" />
     <Folder Include="Helpers\" />
     <Folder Include="Logging\" />
+    <Folder Include="Mapping\Implementations\" />
+    <Folder Include="Mapping\Interfaces\" />
     <Folder Include="UnitOfWork\Implementations\" />
     <Folder Include="UnitOfWork\Interfaces\" />
   </ItemGroup>
