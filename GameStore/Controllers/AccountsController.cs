@@ -75,7 +75,7 @@ namespace GameStore.Controllers
             var userId = id;
             var user = await _userManager.FindByIdAsync(userId);
             
-            _mapper.Map<RegisterDTOs, User>(registerDTOs, user);
+           var test= _mapper.Map<RegisterDTOs, User>(registerDTOs, user);
             await _context.SaveChangesAsync();
 
             user = await _userManager.FindByIdAsync(userId);

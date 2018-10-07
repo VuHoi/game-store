@@ -11,7 +11,7 @@ namespace GameStore.DTOs
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public ICollection<GameDTOs> Games { get; set; }
+        public virtual ICollection<GameDTOs> Games { get; set; }
         public int Money { get; set; }
         public int Reliability { get; set; }
 

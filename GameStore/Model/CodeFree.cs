@@ -9,7 +9,7 @@ namespace GameStore.Model
     {
         public Guid Id { get; set; }
         public string Code { get; set; }
-        public Game Game { get; set; }
+        public virtual Game Game { get; set; }
         public Guid GameId { get; set; }
         public CodeFree()
         {

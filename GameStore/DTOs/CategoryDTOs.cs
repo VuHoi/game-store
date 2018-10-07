@@ -10,7 +10,7 @@ namespace GameStore.DTOs
     {
         public string Title { get; set; }
         public string Image { get; set; }
-        public ICollection<GameDTOs> Games { get; set; }
+        public virtual ICollection<GameDTOs> Games { get; set; }
 
         public CategoryDTOs()
         {

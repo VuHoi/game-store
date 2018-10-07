@@ -8,8 +8,8 @@ namespace GameStore.Model
     public class CategoryGame
     {
         public Guid GameId { get; set; }
-        public Game Game { get; set; }
+        public virtual Game Game { get; set; }
         public Guid CategoryId { get; set; }
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
     }
 }

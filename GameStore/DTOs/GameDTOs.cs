@@ -11,14 +11,14 @@ namespace GameStore.DTOs
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public PublisherDTOs Publisher { get; set; }
-        public ICollection<TitleUser> Members { get; set; }
-        public ICollection<TitleUser> FavoriteMembers { get; set; }
+        public virtual PublisherDTOs Publisher { get; set; }
+        public virtual ICollection<TitleUser> Members { get; set; }
+        public virtual ICollection<TitleUser> FavoriteMembers { get; set; }
         public float Rating { get; set; }
         public string Logo { get; set; }
         public string VideoUrl { get; set; }
         public string Content { get; set; }
-        public ICollection<TitleCategory> Categories { get; set; }
+        public virtual ICollection<TitleCategory> Categories { get; set; }
         public DateTime PurchaseDate { get; set; }
 
         public GameDTOs()

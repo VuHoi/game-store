@@ -31,8 +31,8 @@ namespace GameStore.DTOs
         [StringLength(50, ErrorMessage = "UserName must not have longer than 50 characters.")]
         public string UserName { get; set; }
 
-        public ICollection<Guid> IDGames { get; set; }
-        public ICollection<Guid> IDWishGames { get; set; }
+        public virtual ICollection<Guid> IDGames { get; set; }
+        public virtual ICollection<Guid> IDWishGames { get; set; }
         public RegisterDTOs()
         {
             IDGames = new Collection<Guid>();
