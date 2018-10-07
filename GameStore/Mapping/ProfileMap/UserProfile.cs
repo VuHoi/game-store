@@ -25,7 +25,21 @@ namespace GameStore.Mapping.ProfileMap
                 .ForMember(g => g.Email, opt => opt.Ignore())
                 .ForMember(g => g.PhoneNumber, opt => opt.Ignore());
             CreateMap<RegisterDTOs, User>()
-               .ForMember(g => g.UserName, opt => opt.MapFrom(u=>u.Email));
+               .ForMember(g => g.UserName, opt => opt.MapFrom(u=>u.Email))
+                .ForMember(p => p.WishGames, opt => opt.Ignore())
+               .AfterMap((pr, p) =>
+               {
+                   var addedGame = pr.IDWishGames.Where(id => p.WishGames.All(pc => pc.GameId != id))
+                       .Select(id => new WishGame() { GameId = id, UserId = pr.Id }).ToList();
+                   foreach (var pc in addedGame)
+                       p.WishGames.Add(pc);
+
+                   var removedCategories =
+                       p.WishGames.Where(c => !pr.IDWishGames.Contains(c.GameId)).ToList();
+                   foreach (var pc in removedCategories)
+                       p.WishGames.Remove(pc);
+               })
+               .ForMember(pr => pr.Games, opt => opt.Ignore());
             CreateMap<User, RegisterDTOs>();
         }
     }

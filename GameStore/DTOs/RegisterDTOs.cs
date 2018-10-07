@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace GameStore.DTOs
 {
     public class RegisterDTOs
     {
+        public Guid Id { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }
@@ -28,5 +30,13 @@ namespace GameStore.DTOs
 
         [StringLength(50, ErrorMessage = "UserName must not have longer than 50 characters.")]
         public string UserName { get; set; }
+
+        public ICollection<Guid> IDGames { get; set; }
+        public ICollection<Guid> IDWishGames { get; set; }
+        public RegisterDTOs()
+        {
+            IDGames = new Collection<Guid>();
+            IDWishGames = new Collection<Guid>();
+        }
     }
 }

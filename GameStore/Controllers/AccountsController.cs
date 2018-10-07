@@ -2,6 +2,7 @@
 using GameStore.Common;
 using GameStore.Data;
 using GameStore.DTOs;
+using GameStore.Extention;
 using GameStore.Model;
 using GameStore.Model.Resource;
 using Microsoft.AspNetCore.Authorization;
@@ -43,7 +44,6 @@ namespace GameStore.Controllers
                 {
                     var currentUser = await _userManager.FindByNameAsync(user.UserName);
                     var role = await _userManager.AddToRoleAsync(currentUser, "User");
-
                     return Ok(currentUser.UserName);
                 }
                 //error register failed
@@ -57,13 +57,29 @@ namespace GameStore.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IServiceResult> GetUsers()
+        public async Task<IServiceResult> GetUsersAsync()
         {
             var users = await _context.Users
                 .Include(u=>u.WishGames)
                 .ThenInclude(g => g.Game)
                 .Include(u=>u.Games).ToListAsync();
             var usersDto = _mapper.Map<IEnumerable<User>, IEnumerable<UserDTOs>>(users);
+            return new ServiceResult(payload: usersDto);
+        }
+
+
+        [HttpPut("{id}")]
+        [AllowAnonymous]
+        public async Task<IServiceResult> BuyGameAsync(string id, [FromBody] RegisterDTOs registerDTOs)
+        {
+            var userId = id;
+            var user = await _userManager.FindByIdAsync(userId);
+            
+            _mapper.Map<RegisterDTOs, User>(registerDTOs, user);
+            await _context.SaveChangesAsync();
+
+            user = await _userManager.FindByIdAsync(userId);
+            var usersDto = _mapper.Map<User, UserDTOs>(user);
             return new ServiceResult(payload: usersDto);
         }
 

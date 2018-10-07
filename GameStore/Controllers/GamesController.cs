@@ -41,8 +41,7 @@ namespace GameStore.Controllers
                 .ThenInclude(c => c.Category)
                 .Include(g => g.Publisher)
                 .ToListAsync();
-            Console.WriteLine(games);
-            Console.WriteLine("sss");
+         
             var gamesDto = _mapper.Map<IEnumerable<Game>, IEnumerable<GameDTOs>>(games);
             return new ServiceResult(payload: gamesDto);
         }
