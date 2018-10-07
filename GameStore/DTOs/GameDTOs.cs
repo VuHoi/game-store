@@ -1,6 +1,7 @@
 ﻿using GameStore.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,5 +20,12 @@ namespace GameStore.DTOs
         public string Content { get; set; }
         public ICollection<CategoryDTOs> Categories { get; set; }
         public DateTime PurchaseDate { get; set; }
+
+        public GameDTOs()
+        {
+            Members = new Collection<UserDTOs>();
+            FavoriteMembers = new Collection<UserDTOs>();
+            Categories = new Collection<CategoryDTOs>();
+        }
     }
 }
