@@ -39,7 +39,7 @@ namespace GameStore.Controllers
                 .ThenInclude(m => m.User)
                 .Include(g=>g.Categories)
                 .ThenInclude(c => c.Category)
-                //.Include(g => g.Publisher)
+                .Include(g => g.Publisher)
                 .ToListAsync();
          
             var gamesDto = _mapper.Map<IEnumerable<Game>, IEnumerable<GameDTOs>>(games);

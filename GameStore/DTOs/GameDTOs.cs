@@ -11,7 +11,7 @@ namespace GameStore.DTOs
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public virtual PublisherDTOs Publisher { get; set; }
+        public virtual TitlePublisher Publisher { get; set; }
         public virtual ICollection<TitleUser> Members { get; set; }
         public virtual ICollection<TitleUser> FavoriteMembers { get; set; }
         public float Rating { get; set; }
