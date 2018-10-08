@@ -53,16 +53,37 @@ namespace GameStore.Extention
                 new Category(){ Id = Guid.NewGuid(), Image="Url Image Here",Title="Title here"},
             };
             modelBuilder.Entity<Category>().HasData(Categories);
+            var Users = new[]
+          {
+                new User(){ Id = Guid.NewGuid(), Hobbies="Hobbies",FullName="Full Name",Email="Email@gmail.com",PasswordHash="Thatvuhai_7595",PhoneNumber="93098509238098523",UserName="UserName"},
+                new User(){ Id = Guid.NewGuid(), Hobbies="Hobbies",FullName="Full Name",Email="Email1@gmail.com",PasswordHash="Thatvuhai_7595",PhoneNumber="93098509228098523",UserName="UserName1"},
+                new User(){ Id = Guid.NewGuid(), Hobbies="Hobbies",FullName="Full Name",Email="Email2@gmail.com",PasswordHash="Thatvuhai_7595",PhoneNumber="93098559238098523",UserName="UserName2"},
+                new User(){ Id = Guid.NewGuid(), Hobbies="Hobbies",FullName="Full Name",Email="Email3@gmail.com",PasswordHash="Thatvuhai_7595",PhoneNumber="93098609238098523",UserName="UserName3"},
+                new User(){ Id = Guid.NewGuid(), Hobbies="Hobbies",FullName="Full Name",Email="Email4@gmail.com",PasswordHash="Thatvuhai_7595",PhoneNumber="93098509738098523",UserName="UserName4"},
+            };
+            modelBuilder.Entity<User>().HasData(Users);
+            var id = Guid.NewGuid();
+
 
             var Games = new[]
           {
-                new Game(){ Id = Guid.NewGuid(), Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,PurchaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here",PublisherId=Publishers[0].Id},
+                new Game(){ Id = id, Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,PurchaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here",PublisherId=Publishers[0].Id },
                 new Game(){ Id = Guid.NewGuid(), Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,PurchaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here",PublisherId=Publishers[1].Id},
                 new Game(){ Id = Guid.NewGuid(), Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,PurchaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here" ,PublisherId=Publishers[2].Id},
                 new Game(){ Id = Guid.NewGuid(), Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,PurchaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here" ,PublisherId=Publishers[3].Id},
                 new Game(){ Id = Guid.NewGuid(), Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,PurchaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here" ,PublisherId=Publishers[4].Id},
             };
             modelBuilder.Entity<Game>().HasData(Games);
+
+            var UserGames = new[]
+            {
+                new UserGame(){ UserId = Users[0].Id, GameId=Games[0].Id},
+                new UserGame(){ UserId = Users[1].Id, GameId=Games[1].Id },
+                new UserGame(){ UserId = Users[2].Id, GameId=Games[2].Id},
+                new UserGame(){ UserId = Users[3].Id, GameId=Games[3].Id},
+                new UserGame(){ UserId = Users[4].Id, GameId=Games[4].Id},
+            };
+            modelBuilder.Entity<UserGame>().HasData(UserGames);
 
             var CodeFrees = new[]
             {
@@ -84,26 +105,10 @@ namespace GameStore.Extention
             };
             modelBuilder.Entity<CategoryGame>().HasData(CategoryGames);
 
-            var Users = new[]
-           {
-                new User(){ Id = Guid.NewGuid(), Hobbies="Hobbies",FullName="Full Name",Email="Email@gmail.com",PasswordHash="Thatvuhai_7595",PhoneNumber="93098509238098523",UserName="UserName"},
-                new User(){ Id = Guid.NewGuid(), Hobbies="Hobbies",FullName="Full Name",Email="Email1@gmail.com",PasswordHash="Thatvuhai_7595",PhoneNumber="93098509228098523",UserName="UserName1"},
-                new User(){ Id = Guid.NewGuid(), Hobbies="Hobbies",FullName="Full Name",Email="Email2@gmail.com",PasswordHash="Thatvuhai_7595",PhoneNumber="93098559238098523",UserName="UserName2"},
-                new User(){ Id = Guid.NewGuid(), Hobbies="Hobbies",FullName="Full Name",Email="Email3@gmail.com",PasswordHash="Thatvuhai_7595",PhoneNumber="93098609238098523",UserName="UserName3"},
-                new User(){ Id = Guid.NewGuid(), Hobbies="Hobbies",FullName="Full Name",Email="Email4@gmail.com",PasswordHash="Thatvuhai_7595",PhoneNumber="93098509738098523",UserName="UserName4"},
-            };
-            modelBuilder.Entity<User>().HasData(Users);
+           
 
 
-            var UserGames = new[]
-            {
-                new UserGame(){ UserId = Users[0].Id, GameId=Games[0].Id},
-                new UserGame(){ UserId = Users[1].Id, GameId=Games[1].Id },
-                new UserGame(){ UserId = Users[2].Id, GameId=Games[2].Id},
-                new UserGame(){ UserId = Users[3].Id, GameId=Games[3].Id},
-                new UserGame(){ UserId = Users[4].Id, GameId=Games[4].Id},
-            };
-            modelBuilder.Entity<UserGame>().HasData(UserGames);
+          
 
             var WishGames = new[]
            {

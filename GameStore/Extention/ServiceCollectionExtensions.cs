@@ -13,7 +13,10 @@ namespace GameStore.Extention
         public static IServiceCollection AddDependencies(this IServiceCollection services)
         {
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-           
+            services.AddScoped<IFreeCodeRepository, FreeCodeRepository>();
+            services.AddScoped<IGameRepository, GameRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPublisherRepository, PublisherRepository>();
             return services;
         }
     }
