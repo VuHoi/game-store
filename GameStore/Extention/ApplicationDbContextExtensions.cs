@@ -87,13 +87,13 @@ namespace GameStore.Extention
 
             var CodeFrees = new[]
             {
-                new CodeFree(){ Id = Guid.NewGuid(), Code = (Guid.NewGuid()).ToString(),GameId= Games[0].Id},
-                new CodeFree(){ Id = Guid.NewGuid(), Code = (Guid.NewGuid()).ToString(),GameId= Games[1].Id},
-                new CodeFree(){ Id = Guid.NewGuid(), Code = (Guid.NewGuid()).ToString(),GameId= Games[2].Id},
-                new CodeFree(){ Id = Guid.NewGuid(), Code = (Guid.NewGuid()).ToString(),GameId= Games[3].Id},
-                new CodeFree(){ Id = Guid.NewGuid(), Code = (Guid.NewGuid()).ToString(),GameId= Games[4].Id},
+                new FreeCode(){ Id = Guid.NewGuid(), Code = (Guid.NewGuid()).ToString(),GameId= Games[0].Id},
+                new FreeCode(){ Id = Guid.NewGuid(), Code = (Guid.NewGuid()).ToString(),GameId= Games[1].Id},
+                new FreeCode(){ Id = Guid.NewGuid(), Code = (Guid.NewGuid()).ToString(),GameId= Games[2].Id},
+                new FreeCode(){ Id = Guid.NewGuid(), Code = (Guid.NewGuid()).ToString(),GameId= Games[3].Id},
+                new FreeCode(){ Id = Guid.NewGuid(), Code = (Guid.NewGuid()).ToString(),GameId= Games[4].Id},
             };
-            modelBuilder.Entity<CodeFree>().HasData(CodeFrees);
+            modelBuilder.Entity<FreeCode>().HasData(CodeFrees);
 
             var CategoryGames = new[]
            {

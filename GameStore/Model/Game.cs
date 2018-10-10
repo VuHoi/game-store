@@ -22,7 +22,7 @@ namespace GameStore.Model
         public DateTime ReleaseDate { get; set; }
        
         public float Price { get; set; }
-        public virtual ICollection<CodeFree> FreeCodes { get; set; }
+        public virtual ICollection<FreeCode> FreeCodes { get; set; }
         //Server=(localdb)\\mssqllocaldb;Database=GameDB;Trusted_Connection=True
         //Server=tcp:gamestorecrosplatformdbserver.database.windows.net,1433;Initial Catalog = GameStoreDb; Persist Security Info=False;User ID = vkhoi; Password=Thatvuhai_7595;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout = 30;
         public Game()
@@ -30,7 +30,7 @@ namespace GameStore.Model
             Id = Guid.NewGuid();
             Members = new Collection<UserGame>();
             FavoriteMembers = new Collection<WishGame>();
-            FreeCodes = new Collection<CodeFree>();
+            FreeCodes = new Collection<FreeCode>();
             Categories = new Collection<CategoryGame>();
             ReleaseDate= DateTime.Now;
         }
