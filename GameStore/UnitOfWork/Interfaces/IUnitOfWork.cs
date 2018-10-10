@@ -8,8 +8,6 @@ namespace GameStore.UnitOfWork.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        TRepository GetRepository<TRepository>()
-            where TRepository : IDataRepository;
         Task<bool> CompleteAsync();
     }
 }

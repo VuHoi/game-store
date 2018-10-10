@@ -1,4 +1,7 @@
-﻿using GameStore.Data;
+﻿using AutoMapper;
+using GameStore.Common;
+using GameStore.Data;
+using GameStore.DTOs;
 using GameStore.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -16,18 +19,21 @@ namespace GameStore.Controllers
     public class PublishersController :Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public PublishersController(ApplicationDbContext context)
+        private readonly IMapper _mapper;
+        public PublishersController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<Publisher> GetGames()
+        public async Task<IServiceResult> GetCategories()
         {
-            return _context.Publishers;
+            var publishers = await _context.Publishers.Include(c => c.Games).ToListAsync();
+            var publishersDto = _mapper.Map<IEnumerable<Publisher>, IEnumerable<PublisherDTOs>>(publishers);
+            return new ServiceResult(payload: publishersDto);
         }
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
