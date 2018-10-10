@@ -2,9 +2,11 @@
 using GameStore.Common;
 using GameStore.Data;
 using GameStore.DTOs;
+using GameStore.Exceptions;
 using GameStore.Extention;
 using GameStore.Model;
 using GameStore.Model.Resource;
+using GameStore.UnitOfWork.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,12 +22,14 @@ namespace GameStore.Controllers
     [Route("/api/[controller]")]
     public class AccountsController : Controller
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public AccountsController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDbContext context, IMapper mapper)
+        public AccountsController(IUnitOfWork unitOfWork, UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDbContext context, IMapper mapper)
         {
+            _unitOfWork = unitOfWork;
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
@@ -59,12 +63,19 @@ namespace GameStore.Controllers
         [AllowAnonymous]
         public async Task<IServiceResult> GetUsersAsync()
         {
-            var users = await _context.Users
-                .Include(u=>u.WishGames)
-                .ThenInclude(g => g.Game)
-                .Include(u=>u.Games).ToListAsync();
-            var usersDto = _mapper.Map<IEnumerable<User>, IEnumerable<UserDTOs>>(users);
-            return new ServiceResult(payload: usersDto);
+            try
+            {
+                var users = await _context.Users
+                    .Include(u => u.WishGames)
+                    .ThenInclude(g => g.Game)
+                    .Include(u => u.Games).ToListAsync();
+                var usersDto = _mapper.Map<IEnumerable<User>, IEnumerable<UserDTOs>>(users);
+                return new ServiceResult(payload: usersDto);
+            }
+            catch (Exception e)
+            {
+                return new ServiceResult(false, e.Message);
+            }
         }
 
 
@@ -72,15 +83,25 @@ namespace GameStore.Controllers
         [AllowAnonymous]
         public async Task<IServiceResult> BuyGameAsync(string id, [FromBody] RegisterDTOs registerDTOs)
         {
-            var userId = id.ToGuid();
-            var user = await _context.Users.Where(u=>u.Id==userId).Include(u=>u.WishGames).Include(u=>u.Games).SingleAsync();
-            
-           var test= _mapper.Map<RegisterDTOs, User>(registerDTOs, user);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var userId = id.ToGuid();
+                var user = await _context.Users.Where(u => u.Id == userId).Include(u => u.WishGames).Include(u => u.Games).SingleAsync();
 
-            user = await _userManager.FindByIdAsync(id);
-            var usersDto = _mapper.Map<User, UserDTOs>(user);
-            return new ServiceResult(payload: usersDto);
+                _mapper.Map<RegisterDTOs, User>(registerDTOs, user);
+                if (!await _unitOfWork.CompleteAsync())
+                {
+                    throw new SaveFailedException(nameof(user));
+                }
+
+                user = await _userManager.FindByIdAsync(id);
+                var usersDto = _mapper.Map<User, UserDTOs>(user);
+                return new ServiceResult(payload: usersDto);
+            }
+            catch (Exception e)
+            {
+                return new ServiceResult(false, e.Message);
+            }
         }
 
     }

@@ -32,18 +32,25 @@ namespace GameStore.Controllers
         [AllowAnonymous]
         public async Task<IServiceResult> GetGames()
         {
-            var games = await _context.Games
-                .Include(g=>g.Members)
+            try
+            {
+                var games = await _context.Games
+                .Include(g => g.Members)
                 .ThenInclude(m => m.User)
-                .Include(g=>g.FavoriteMembers)
+                .Include(g => g.FavoriteMembers)
                 .ThenInclude(m => m.User)
-                .Include(g=>g.Categories)
+                .Include(g => g.Categories)
                 .ThenInclude(c => c.Category)
                 .Include(g => g.Publisher)
                 .ToListAsync();
-         
-            var gamesDto = _mapper.Map<IEnumerable<Game>, IEnumerable<GameDTOs>>(games);
-            return new ServiceResult(payload: gamesDto);
+
+                var gamesDto = _mapper.Map<IEnumerable<Game>, IEnumerable<GameDTOs>>(games);
+                return new ServiceResult(payload: gamesDto);
+            }
+            catch (Exception e)
+            {
+                return new ServiceResult(false, e.Message);
+            }
         }
        
 

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace GameStore.Controllers
 {
-    public class FreeCodeController:Controller
+    public class FreeCodeController : Controller
     {
 
         private readonly ApplicationDbContext _context;
@@ -31,9 +31,16 @@ namespace GameStore.Controllers
         [AllowAnonymous]
         public async Task<IServiceResult> GetFreeCodes()
         {
-            var freeCodes = await _context.FreeCodes.Include(c => c.Game).ToListAsync();
-            var freeCodesDto = _mapper.Map<IEnumerable<FreeCode>, IEnumerable<FreeCodeDTOs>>(freeCodes);
-            return new ServiceResult(payload: freeCodesDto);
+            try
+            {
+                var freeCodes = await _context.FreeCodes.Include(c => c.Game).ToListAsync();
+                var freeCodesDto = _mapper.Map<IEnumerable<FreeCode>, IEnumerable<FreeCodeDTOs>>(freeCodes);
+                return new ServiceResult(payload: freeCodesDto);
+            }
+            catch (Exception e)
+            {
+                return new ServiceResult(false, message: e.Message);
+            }
         }
     }
 }

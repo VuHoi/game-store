@@ -31,10 +31,17 @@ namespace GameStore.Controllers
         [AllowAnonymous]
         public async Task<IServiceResult> GetCategories()
         {
-            var categories = await _context.Categories.Include(c=>c.Games).ThenInclude(g=>g.Game).ToListAsync();
-            var categoriesDto = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTOs>>(categories);
-            
-            return new ServiceResult(payload: categoriesDto);
+            try
+            {
+                var categories = await _context.Categories.Include(c => c.Games).ThenInclude(g => g.Game).ToListAsync();
+                var categoriesDto = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTOs>>(categories);
+
+                return new ServiceResult(payload: categoriesDto);
+            }
+            catch (Exception e)
+            {
+                return new ServiceResult(false,message: e.Message);
+            }
         }
 
     }

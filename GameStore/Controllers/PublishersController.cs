@@ -16,7 +16,7 @@ namespace GameStore.Controllers
 {
     [Produces("application/json")]
     [Route("/api/[controller]")]
-    public class PublishersController :Controller
+    public class PublishersController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -31,9 +31,16 @@ namespace GameStore.Controllers
         [AllowAnonymous]
         public async Task<IServiceResult> GetCategories()
         {
-            var publishers = await _context.Publishers.Include(c => c.Games).ToListAsync();
-            var publishersDto = _mapper.Map<IEnumerable<Publisher>, IEnumerable<PublisherDTOs>>(publishers);
-            return new ServiceResult(payload: publishersDto);
+            try
+            {
+                var publishers = await _context.Publishers.Include(c => c.Games).ToListAsync();
+                var publishersDto = _mapper.Map<IEnumerable<Publisher>, IEnumerable<PublisherDTOs>>(publishers);
+                return new ServiceResult(payload: publishersDto);
+            }
+            catch (Exception e)
+            {
+                return new ServiceResult(false, message: e.Message);
+            }
         }
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
