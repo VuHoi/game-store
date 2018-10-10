@@ -13,27 +13,29 @@ using System.Threading.Tasks;
 
 namespace GameStore.Controllers
 {
-    public class FreeCodeController:Controller
-    {
 
+    [Produces("application/json")]
+    [Route("/api/[controller]")]
+    public class CategoriesController:Controller
+    {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public FreeCodeController(ApplicationDbContext context, IMapper mapper)
+        public CategoriesController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-
-
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IServiceResult> GetFreeCodes()
+        public async Task<IServiceResult> GetCategories()
         {
-            var freeCodes = await _context.FreeCodes.Include(c => c.Game).ToListAsync();
-            var freeCodesDto = _mapper.Map<IEnumerable<FreeCode>, IEnumerable<FreeCodeDTOs>>(freeCodes);
-            return new ServiceResult(payload: freeCodesDto);
+            var categories = await _context.Categories.Include(c=>c.Games).ThenInclude(g=>g.Game).ToListAsync();
+            var categoriesDto = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTOs>>(categories);
+            
+            return new ServiceResult(payload: categoriesDto);
         }
+
     }
 }

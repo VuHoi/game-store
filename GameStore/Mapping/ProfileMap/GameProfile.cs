@@ -23,11 +23,7 @@ namespace GameStore.Mapping.ProfileMap
                        p.Categories.Select(pc => pc.Category)))
                .ForMember(pr => pr.Publisher, opt => opt.MapFrom(p => p.Publisher));
                
-            CreateMap<UserDTOs, User>()
-                .ForMember(g => g.Email, opt => opt.Ignore())
-                .ForMember(g => g.PhoneNumber, opt => opt.Ignore());
-            CreateMap<RegisterDTOs, User>();
-            CreateMap<User, RegisterDTOs>();
+           
         }
     }
 }

@@ -18,11 +18,11 @@ namespace GameStore.Model.Resource
         public string Content { get; set; }
         public ICollection<Category> Categories { get; set; }
         public DateTime PurchaseDate { get; set; }
-        public ICollection<CodeFree> FreeCode { get; set; }
+        public ICollection<FreeCode> FreeCode { get; set; }
         public GameResource()
         {
             Members = new Collection<User>();
-            FreeCode = new Collection<CodeFree>();
+            FreeCode = new Collection<FreeCode>();
             Categories = new Collection<Category>();
             PurchaseDate = DateTime.Now;
         }

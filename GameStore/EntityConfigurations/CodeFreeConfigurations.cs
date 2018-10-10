@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace GameStore.EntityConfigurations
 {
-    public class CodeFreeConfigurations : IEntityTypeConfiguration<CodeFree>
+    public class CodeFreeConfigurations : IEntityTypeConfiguration<FreeCode>
     {
-        public void Configure(EntityTypeBuilder<CodeFree> builder)
+        public void Configure(EntityTypeBuilder<FreeCode> builder)
         {
             //builder
             //   .HasOne(a => a.Game)

@@ -19,7 +19,8 @@ namespace GameStore.Model
         public string VideoUrl { get; set; }
         public string Content { get; set; }
         public virtual ICollection<CategoryGame> Categories { get; set; }
-        public DateTime PurchaseDate { get; set; }
+        public DateTime ReleaseDate { get; set; }
+       
         public float Price { get; set; }
         public virtual ICollection<CodeFree> FreeCodes { get; set; }
         //Server=(localdb)\\mssqllocaldb;Database=GameDB;Trusted_Connection=True
@@ -31,7 +32,7 @@ namespace GameStore.Model
             FavoriteMembers = new Collection<WishGame>();
             FreeCodes = new Collection<CodeFree>();
             Categories = new Collection<CategoryGame>();
-            PurchaseDate= DateTime.Now;
+            ReleaseDate= DateTime.Now;
         }
     }
 }

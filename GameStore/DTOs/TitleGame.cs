@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace GameStore.DTOs
 {
-    public class GameTitle
+    public class TitleGame
     {
         public string Name { get; set; }
         public string Logo { get; set; }
-        public DateTime PurchaseDate { get; set; }
+        public DateTime ReleaseDate { get; set; }
+      
     }
 }

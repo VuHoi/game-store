@@ -21,12 +21,14 @@ namespace GameStore.Mapping.ProfileMap
 
                 .ForAllMembers(opt => opt.Condition(
                     (src, des, srcMbr, desMbr) => (srcMbr != null)));
+
             CreateMap<UserDTOs, User>()
                 .ForMember(g => g.Email, opt => opt.Ignore())
                 .ForMember(g => g.PhoneNumber, opt => opt.Ignore());
+
             CreateMap<RegisterDTOs, User>()
                .ForMember(g => g.UserName, opt => opt.MapFrom(u => u.Email))
-               //.ForMember(p => p.WishGames, opt => opt.Ignore())
+               .ForMember(p => p.WishGames, opt => opt.Ignore())
                .AfterMap((pr, p) =>
                {
                    var addedGame = pr.IDWishGames.Where(id => p.WishGames.All(pc => pc.GameId != id))
@@ -38,8 +40,21 @@ namespace GameStore.Mapping.ProfileMap
                        p.WishGames.Where(c => !pr.IDWishGames.Contains(c.GameId)).ToList();
                    foreach (var pc in removedCategories)
                        p.WishGames.Remove(pc);
-               });
-               //.ForMember(pr => pr.Games, opt => opt.Ignore());
+               })
+               .ForMember(pr => pr.Games, opt => opt.Ignore())
+                .AfterMap((pr, p) =>
+                {
+                    var addedGame = pr.IDGames.Where(id => p.Games.All(pc => pc.GameId != id))
+                        .Select(id => new UserGame() { GameId = id, UserId = pr.Id }).ToList();
+                    foreach (var pc in addedGame)
+                        p.Games.Add(pc);
+
+                    var removedCategories =
+                        p.Games.Where(c => !pr.IDGames.Contains(c.GameId)).ToList();
+                    foreach (var pc in removedCategories)
+                        p.Games.Remove(pc);
+                });
+
             CreateMap<User, RegisterDTOs>();
         }
     }

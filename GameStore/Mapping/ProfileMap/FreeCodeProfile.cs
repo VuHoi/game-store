@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GameStore.DTOs;
+using GameStore.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +11,9 @@ namespace GameStore.Mapping.ProfileMap
     {
         protected override void CreateMap()
         {
-          
+            CreateMap<FreeCode, FreeCodeDTOs>();
+
+            CreateMap<CategoryDTOs, Category>();
         }
     }
 }

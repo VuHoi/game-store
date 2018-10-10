@@ -67,21 +67,21 @@ namespace GameStore.Extention
 
             var Games = new[]
           {
-                new Game(){ Id = id, Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,PurchaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here",PublisherId=Publishers[0].Id },
-                new Game(){ Id = Guid.NewGuid(), Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,PurchaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here",PublisherId=Publishers[1].Id},
-                new Game(){ Id = Guid.NewGuid(), Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,PurchaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here" ,PublisherId=Publishers[2].Id},
-                new Game(){ Id = Guid.NewGuid(), Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,PurchaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here" ,PublisherId=Publishers[3].Id},
-                new Game(){ Id = Guid.NewGuid(), Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,PurchaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here" ,PublisherId=Publishers[4].Id},
+                new Game(){ Id = id, Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,ReleaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here",PublisherId=Publishers[0].Id },
+                new Game(){ Id = Guid.NewGuid(), Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,ReleaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here",PublisherId=Publishers[1].Id},
+                new Game(){ Id = Guid.NewGuid(), Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,ReleaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here" ,PublisherId=Publishers[2].Id},
+                new Game(){ Id = Guid.NewGuid(), Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,ReleaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here" ,PublisherId=Publishers[3].Id},
+                new Game(){ Id = Guid.NewGuid(), Content="Good Game",Logo="URL Logo here",Name="Name Of Game",Price=100000,ReleaseDate=new DateTime(),Rating=4.5f,VideoUrl="URL Video here" ,PublisherId=Publishers[4].Id},
             };
             modelBuilder.Entity<Game>().HasData(Games);
 
             var UserGames = new[]
             {
-                new UserGame(){ UserId = Users[0].Id, GameId=Games[0].Id},
-                new UserGame(){ UserId = Users[1].Id, GameId=Games[1].Id },
-                new UserGame(){ UserId = Users[2].Id, GameId=Games[2].Id},
-                new UserGame(){ UserId = Users[3].Id, GameId=Games[3].Id},
-                new UserGame(){ UserId = Users[4].Id, GameId=Games[4].Id},
+                new UserGame(){ UserId = Users[0].Id, GameId=Games[0].Id,PurchaseDate=new DateTime()},
+                new UserGame(){ UserId = Users[1].Id, GameId=Games[1].Id ,PurchaseDate=new DateTime()},
+                new UserGame(){ UserId = Users[2].Id, GameId=Games[2].Id,PurchaseDate=new DateTime()},
+                new UserGame(){ UserId = Users[3].Id, GameId=Games[3].Id,PurchaseDate=new DateTime()},
+                new UserGame(){ UserId = Users[4].Id, GameId=Games[4].Id,PurchaseDate=new DateTime()},
             };
             modelBuilder.Entity<UserGame>().HasData(UserGames);
 

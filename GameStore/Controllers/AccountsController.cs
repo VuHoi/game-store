@@ -73,7 +73,7 @@ namespace GameStore.Controllers
         public async Task<IServiceResult> BuyGameAsync(string id, [FromBody] RegisterDTOs registerDTOs)
         {
             var userId = id.ToGuid();
-            var user = await _context.Users.Where(u=>u.Id==userId).Include(u=>u.WishGames).SingleAsync();
+            var user = await _context.Users.Where(u=>u.Id==userId).Include(u=>u.WishGames).Include(u=>u.Games).SingleAsync();
             
            var test= _mapper.Map<RegisterDTOs, User>(registerDTOs, user);
             await _context.SaveChangesAsync();
