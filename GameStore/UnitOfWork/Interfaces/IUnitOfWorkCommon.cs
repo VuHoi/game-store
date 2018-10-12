@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameStore.UnitOfWork.Interfaces
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWorkCommon : IDisposable
     {
         Task<bool> CompleteAsync();
     }

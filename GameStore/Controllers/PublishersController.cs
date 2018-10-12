@@ -2,7 +2,9 @@
 using GameStore.Common;
 using GameStore.Data;
 using GameStore.DTOs;
+using GameStore.Exceptions;
 using GameStore.Model;
+using GameStore.UnitOfWork.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,8 +22,10 @@ namespace GameStore.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public PublishersController(ApplicationDbContext context, IMapper mapper)
+        private readonly IUnitOfWorkCommon _unitOfWork;
+        public PublishersController(IUnitOfWorkCommon unitOfWork,ApplicationDbContext context, IMapper mapper)
         {
+            _unitOfWork = unitOfWork;
             _context = context;
             _mapper = mapper;
         }
@@ -46,36 +50,46 @@ namespace GameStore.Controllers
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetPublisherById([FromRoute] Guid id)
+        public async Task<IServiceResult> GetPublisherById([FromRoute] Guid id)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                var publisher = await _context.Publishers.Include(p => p.Games).SingleOrDefaultAsync(g => g.Id == id);
+                if (publisher == null)
+                {
+                    throw new NotFoundException(nameof(publisher), id);
+                }
+                var publishersDto = _mapper.Map<Publisher, PublisherDTOs>(publisher);
+                return new ServiceResult(payload: publishersDto);
             }
-
-            var publisher = await _context.Publishers.SingleOrDefaultAsync(g => g.Id == id);
-
-            if (publisher == null)
+            catch (Exception e)
             {
-                return NotFound();
+                return new ServiceResult(false,message:e.Message);
             }
-
-            return Ok(publisher);
         }
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult PostPublisher([FromBody] Publisher publisher)
+        public async Task<IServiceResult> PostPublisher([FromBody] SavedPublisherDTOs savedPublisherDTOs)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
-            _context.Publishers.Add(publisher);
-            _context.SaveChangesAsync();
+                var publisher = _mapper.Map<SavedPublisherDTOs, Publisher>(savedPublisherDTOs);
+                _context.Publishers.Add(publisher);
 
-            return Ok(publisher);
+                if (!await _unitOfWork.CompleteAsync())
+                {
+                    throw new SaveFailedException(nameof(publisher));
+                }
+                 publisher = await _context.Publishers.Include(p => p.Games).SingleOrDefaultAsync(g => g.Id == publisher.Id);
+                var publisherDto = _mapper.Map<Publisher, PublisherDTOs>(publisher);
+                return new ServiceResult(payload: publisherDto);
+            }
+            catch (Exception e)
+            {
+                return new ServiceResult(false, message: e.Message);
+            }
         }
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]

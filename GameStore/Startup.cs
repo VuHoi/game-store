@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using GameStore.Data;
+using GameStore.Extention;
 using GameStore.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -69,7 +70,7 @@ namespace GameStore
                     return Task.CompletedTask;
                 };
             });
-
+            services.AddDependencies();
             services.AddAutoMapper();
             services.AddMvc();
         }

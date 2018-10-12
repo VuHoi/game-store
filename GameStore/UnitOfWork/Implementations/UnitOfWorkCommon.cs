@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace GameStore.UnitOfWork.Implementations
 {
-    public class UnitOfWork: IUnitOfWork
+    public class UnitOfWorkCommon : IUnitOfWorkCommon
     {
         private readonly ApplicationDbContext _context;
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWorkCommon(ApplicationDbContext context)
         {
             _context = context;
         }

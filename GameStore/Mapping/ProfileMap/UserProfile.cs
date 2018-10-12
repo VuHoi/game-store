@@ -36,9 +36,9 @@ namespace GameStore.Mapping.ProfileMap
                    foreach (var pc in addedGame)
                        p.WishGames.Add(pc);
 
-                   var removedCategories =
+                   var removedGames =
                        p.WishGames.Where(c => !pr.IDWishGames.Contains(c.GameId)).ToList();
-                   foreach (var pc in removedCategories)
+                   foreach (var pc in removedGames)
                        p.WishGames.Remove(pc);
                })
                .ForMember(pr => pr.Games, opt => opt.Ignore())

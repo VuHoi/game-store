@@ -24,7 +24,5 @@
     <Folder Include="Logging\" />
     <Folder Include="Mapping\Implementations\" />
     <Folder Include="Mapping\Interfaces\" />
-    <Folder Include="UnitOfWork\Implementations\" />
-    <Folder Include="UnitOfWork\Interfaces\" />
   </ItemGroup>
 </Project>

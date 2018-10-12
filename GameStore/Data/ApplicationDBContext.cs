@@ -34,7 +34,7 @@ namespace GameStore.Data
             //chaneg Name table for helpful
             builder.ChangeIdentityTableNames();
             //seed data 
-          
+
             //builder.SeedData();
         }
 

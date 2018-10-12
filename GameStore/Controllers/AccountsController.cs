@@ -22,12 +22,12 @@ namespace GameStore.Controllers
     [Route("/api/[controller]")]
     public class AccountsController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWorkCommon _unitOfWork;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public AccountsController(IUnitOfWork unitOfWork, UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDbContext context, IMapper mapper)
+        public AccountsController(IUnitOfWorkCommon unitOfWork, UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDbContext context, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
@@ -38,9 +38,9 @@ namespace GameStore.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody] RegisterDTOs register)
+        public async Task<IServiceResult> Register([FromBody] RegisterDTOs register)
         {
-            if (ModelState.IsValid)
+            try
             {
                 var user = _mapper.Map<RegisterDTOs, User>(register);
                 var result = await _userManager.CreateAsync(user, register.Password);
@@ -48,15 +48,18 @@ namespace GameStore.Controllers
                 {
                     var currentUser = await _userManager.FindByNameAsync(user.UserName);
                     var role = await _userManager.AddToRoleAsync(currentUser, "User");
-                    return Ok(currentUser.UserName);
+                    return new ServiceResult(payload: currentUser.UserName);
                 }
-                //error register failed
-                //AddErrors(result);
-                return Json(result.Errors);
+                return new ServiceResult(false, message: result.Errors.ToString());
             }
+            catch (Exception e)
+            {
+                return new ServiceResult(false, message: e.Message);
+            }
+               
 
-            // If we got this far, something failed, redisplay form
-            return BadRequest();
+            
+
         }
 
         [HttpGet]
@@ -81,7 +84,7 @@ namespace GameStore.Controllers
 
         [HttpPut("{id}")]
         [AllowAnonymous]
-        public async Task<IServiceResult> BuyGameAsync(string id, [FromBody] RegisterDTOs registerDTOs)
+        public async Task<IServiceResult> BuyGameAsync([FromRoute] string id, [FromBody] RegisterDTOs registerDTOs)
         {
             try
             {
