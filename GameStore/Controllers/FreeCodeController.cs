@@ -8,6 +8,7 @@ using GameStore.UnitOfWork.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +24,13 @@ namespace GameStore.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly IUnitOfWorkCommon _unitOfWork;
-
-        public FreeCodesController(IUnitOfWorkCommon unitOfWork, ApplicationDbContext context, IMapper mapper)
+        private readonly ILogger<FreeCodesController> _logger;
+        public FreeCodesController(IUnitOfWorkCommon unitOfWork, ApplicationDbContext context, IMapper mapper, ILogger<FreeCodesController> logger)
         {
             _context = context;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
 
@@ -45,6 +47,7 @@ namespace GameStore.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError($"Can't get all free codes. {e.Message}");
                 return new ServiceResult(false, message: e.Message);
             }
         }
@@ -61,6 +64,7 @@ namespace GameStore.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError($"Can't get free codes of {gameId}. {e.Message}");
                 return new ServiceResult(false, message: e.Message);
             }
         }
@@ -77,10 +81,12 @@ namespace GameStore.Controllers
                 {
                     throw new SaveFailedException(nameof(freeCode));
                 }
-                return new ServiceResult(payload: " ");
+                _logger.LogInformation($"Freecode {freeCode.Code} with game id: {freeCode.GameId} created.");
+                return new ServiceResult(payload: freeCode.Code);
             }
             catch (Exception e)
             {
+                _logger.LogError($"Can't create  a free code {savedFreeCodeDTOs.Id}. {e.Message}");
                 return new ServiceResult(false, message: e.Message);
             }
         }

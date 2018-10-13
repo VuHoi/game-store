@@ -6,6 +6,7 @@ using GameStore.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +21,13 @@ namespace GameStore.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ILogger<CategoriesController> _logger;
 
-        public CategoriesController(ApplicationDbContext context, IMapper mapper)
+        public CategoriesController(ApplicationDbContext context, IMapper mapper, ILogger<CategoriesController> logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -40,6 +43,7 @@ namespace GameStore.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError($"Can get all categories. {e.Message}");
                 return new ServiceResult(false,message: e.Message);
             }
         }

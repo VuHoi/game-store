@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,13 @@ namespace GameStore.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly IUnitOfWorkCommon _unitOfWork;
-        public GamesController(IUnitOfWorkCommon unitOfWork,ApplicationDbContext context, IMapper mapper)
+        private readonly ILogger<GamesController> _logger;
+        public GamesController(IUnitOfWorkCommon unitOfWork,ApplicationDbContext context, IMapper mapper, ILogger<GamesController> logger)
         {
             _unitOfWork = unitOfWork;
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
@@ -52,6 +55,7 @@ namespace GameStore.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError($"Can't get all games. {e.Message}");
                 return new ServiceResult(false, e.Message);
             }
         }
@@ -62,7 +66,6 @@ namespace GameStore.Controllers
         [AllowAnonymous]
         public async Task<IServiceResult> GetGameById([FromRoute] Guid id)
         {
-
             try
             {
                 var game = await _context.Games
@@ -78,14 +81,13 @@ namespace GameStore.Controllers
                 {
                     throw new NotFoundException(nameof(game), id);
                 }
-
                 var gameDto = _mapper.Map<Game, GameDTOs>(game);
-
-               
+              
                 return new ServiceResult(payload: gameDto);
             }
             catch (Exception e)
             {
+                _logger.LogError($"Can't get game by id: {id} . {e.Message}");
                 return new ServiceResult(false, e.Message);
             }
 
@@ -115,10 +117,13 @@ namespace GameStore.Controllers
                 .SingleOrDefaultAsync(g => g.Id == game.Id);
 
                 var recallGameDTO = _mapper.Map<Game, GameDTOs>(game);
+                _logger.LogInformation($"Game {recallGameDTO.Name}  created.");
                 return new ServiceResult(payload: recallGameDTO);
             }
             catch(Exception e)
             {
+
+                _logger.LogError($"Can't post game by name: {saveGameDTOs.Name} . {e.Message}");
                 return new ServiceResult(false, message: e.Message);
             }
         }
@@ -169,22 +174,28 @@ namespace GameStore.Controllers
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGame([FromRoute] Guid id)
+        public async Task<IServiceResult> DeleteGame([FromRoute] Guid id)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
-            var device = await _context.Games.SingleOrDefaultAsync(m => m.Id == id);
-            if (device == null)
+                var game = await _context.Games.SingleOrDefaultAsync(m => m.Id == id);
+                if (game == null)
+                {
+                    throw new NotFoundException(nameof(game), id);
+                }
+
+                _context.Games.Remove(game);
+                if (!await _unitOfWork.CompleteAsync())
+                {
+                    throw new SaveFailedException(nameof(game));
+                }
+                _logger.LogInformation($"Game {game.Name}  has deleted.");
+                return new ServiceResult(true, message: $"{game.Name} has deleted");
+            }catch(Exception e)
             {
-                return NotFound();
+                _logger.LogError($"Can't delete {id}  because {e.Message}");
+                return new ServiceResult(false, message: $"Can't delete {id}  because {e.Message}");
             }
-
-            _context.Games.Remove(device);
-            await _context.SaveChangesAsync();
-
-            return Ok(device);
         }
 
         private bool GameExists(Guid id)

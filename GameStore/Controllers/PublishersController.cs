@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,17 +24,19 @@ namespace GameStore.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly IUnitOfWorkCommon _unitOfWork;
-        public PublishersController(IUnitOfWorkCommon unitOfWork,ApplicationDbContext context, IMapper mapper)
+        private readonly ILogger<PublishersController> _logger;
+        public PublishersController(IUnitOfWorkCommon unitOfWork, ApplicationDbContext context, IMapper mapper, ILogger<PublishersController> logger)
         {
             _unitOfWork = unitOfWork;
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IServiceResult> GetCategories()
+        public async Task<IServiceResult> GetPublisher()
         {
             try
             {
@@ -43,6 +46,7 @@ namespace GameStore.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError($"Can't get all publsiher because {e.Message}");
                 return new ServiceResult(false, message: e.Message);
             }
         }
@@ -64,7 +68,8 @@ namespace GameStore.Controllers
             }
             catch (Exception e)
             {
-                return new ServiceResult(false,message:e.Message);
+                _logger.LogError($"Can't get publisher by id {id} because {e.Message}");
+                return new ServiceResult(false, message: e.Message);
             }
         }
 
@@ -82,69 +87,76 @@ namespace GameStore.Controllers
                 {
                     throw new SaveFailedException(nameof(publisher));
                 }
-                 publisher = await _context.Publishers.Include(p => p.Games).SingleOrDefaultAsync(g => g.Id == publisher.Id);
+                publisher = await _context.Publishers.Include(p => p.Games).SingleOrDefaultAsync(g => g.Id == publisher.Id);
                 var publisherDto = _mapper.Map<Publisher, PublisherDTOs>(publisher);
+                _logger.LogInformation($"Publisher {publisherDto.Name}  created.");
                 return new ServiceResult(payload: publisherDto);
             }
             catch (Exception e)
             {
+                _logger.LogError($"Can't add  {savedPublisherDTOs.Name} because {e.Message}");
                 return new ServiceResult(false, message: e.Message);
             }
         }
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPublisher([FromRoute] Guid id, [FromBody] Publisher publisher)
+        public async Task<IServiceResult> PutPublisher([FromRoute] Guid id, [FromBody] SavedPublisherDTOs savedPublisherDTOs)
         {
-            if (!ModelState.IsValid)
+            if (id != savedPublisherDTOs.Id)
             {
-                return BadRequest(ModelState);
+                throw new NotFoundException(nameof(savedPublisherDTOs), id);
             }
-
-            if (id != publisher.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(publisher).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                var publisher = _mapper.Map<SavedPublisherDTOs, Publisher>(savedPublisherDTOs);
+                _context.Entry(publisher).State = EntityState.Modified;
+                if (!await _unitOfWork.CompleteAsync())
+                {
+                    throw new SaveFailedException(nameof(publisher));
+                }
+                _context.Entry(publisher).State = EntityState.Modified;
+                // return value 
+                publisher = await _context.Publishers.Include(p => p.Games).SingleOrDefaultAsync(g => g.Id == publisher.Id);
+                var publisherDto = _mapper.Map<Publisher, PublisherDTOs>(publisher);
+                _logger.LogInformation($"Publisher {publisherDto.Name}  modified.");
+                return new ServiceResult(payload: publisherDto);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
                 if (!PublisherExists(id))
                 {
-                    return NotFound();
+                    throw new NotFoundException(nameof(savedPublisherDTOs), id);
                 }
-                else
-                {
-                    throw;
-                }
+                _logger.LogError($"Can't post pubisher {id} because {e.Message}");
+                return new ServiceResult(false, message: e.Message);
             }
-
-            return NoContent();
         }
 
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePublisher([FromRoute] Guid id)
+        public async Task<IServiceResult> DeletePublisher([FromRoute] Guid id)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                var publisher = await _context.Publishers.SingleOrDefaultAsync(m => m.Id == id);
+                if (publisher == null)
+                {
+                    throw new NotFoundException(nameof(publisher), id);
+                }
+                _context.Publishers.Remove(publisher);
+                if (!await _unitOfWork.CompleteAsync())
+                {
+                    throw new SaveFailedException(nameof(publisher));
+                }
+                _logger.LogInformation($"Publisher {publisher.Name}  has deleted.");
+                return new ServiceResult(true, message: $"{publisher.Name} has deleted");
             }
-            var publisher = await _context.Publishers.SingleOrDefaultAsync(m => m.Id == id);
-            if (publisher == null)
+            catch (Exception e)
             {
-                return NotFound();
+                _logger.LogError($"Can't delete {id}  because {e.Message}");
+                return new ServiceResult(false, message: $"Can't delete {id}  because {e.Message}");
             }
-
-            _context.Publishers.Remove(publisher);
-            await _context.SaveChangesAsync();
-
-            return Ok(publisher);
         }
 
         private bool PublisherExists(Guid id)

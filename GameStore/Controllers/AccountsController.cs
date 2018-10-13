@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +27,14 @@ namespace GameStore.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<AccountsController> _logger;
         private readonly IMapper _mapper;
-        public AccountsController(IUnitOfWorkCommon unitOfWork, UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDbContext context, IMapper mapper)
+        public AccountsController(IUnitOfWorkCommon unitOfWork,
+                                  UserManager<User> userManager,
+                                  SignInManager<User> signInManager,
+                                  ApplicationDbContext context,
+                                  IMapper mapper,
+                                  ILogger<AccountsController> logger)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
@@ -46,20 +53,18 @@ namespace GameStore.Controllers
                 var result = await _userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {
-                    var currentUser = await _userManager.FindByNameAsync(user.UserName);
+                    var currentUser = await _userManager.FindByNameAsync(user.Email);
                     var role = await _userManager.AddToRoleAsync(currentUser, "User");
-                    return new ServiceResult(payload: currentUser.UserName);
+                    _logger.LogInformation($"User {user.Email} with id: {user.Id} created.");
+                    return new ServiceResult(payload: currentUser.Email);
                 }
                 return new ServiceResult(false, message: result.Errors.ToString());
             }
             catch (Exception e)
             {
+                _logger.LogError($"Can not create user {register.Email}. {e.Message}");
                 return new ServiceResult(false, message: e.Message);
             }
-               
-
-            
-
         }
 
         [HttpGet]
@@ -77,14 +82,13 @@ namespace GameStore.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError($"Can not get all users. {e.Message}");
                 return new ServiceResult(false, e.Message);
             }
         }
-
-
-        [HttpPut("buy/{id}")]
+        [HttpPut("{id}")]
         [AllowAnonymous]
-        public async Task<IServiceResult> BuyGameAsync([FromRoute] string id, [FromBody] RegisterDTOs registerDTOs)
+        public async Task<IServiceResult> EditGameAsync([FromRoute] string id, [FromBody] RegisterDTOs registerDTOs)
         {
             try
             {
@@ -103,6 +107,35 @@ namespace GameStore.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError($"Can not edit user {registerDTOs.Email} because  {e.Message}");
+                return new ServiceResult(false, e.Message);
+            }
+        }
+
+
+
+        [HttpPut("buy/{id}")]
+        [AllowAnonymous]
+        public async Task<IServiceResult> BuyGameAsync([FromRoute] string id, [FromBody] BuyGameDTOs registerDTOs)
+        {
+            try
+            {
+                var userId = id.ToGuid();
+                var user = await _context.Users.Where(u => u.Id == userId).Include(u => u.WishGames).Include(u => u.Games).SingleAsync();
+
+                _mapper.Map<BuyGameDTOs, User>(registerDTOs, user);
+                if (!await _unitOfWork.CompleteAsync())
+                {
+                    throw new SaveFailedException(nameof(user));
+                }
+
+                user = await _userManager.FindByIdAsync(id);
+                var usersDto = _mapper.Map<User, UserDTOs>(user);
+                return new ServiceResult(payload: usersDto);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Can not buy this game. {e.Message}");
                 return new ServiceResult(false, e.Message);
             }
         }
@@ -129,6 +162,7 @@ namespace GameStore.Controllers
             }
             catch (Exception e)
             {
+                _logger.LogError($"Can not add this game. {e.Message}");
                 return new ServiceResult(false, e.Message);
             }
         }
