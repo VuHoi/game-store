@@ -24,7 +24,7 @@ namespace GameStore.Model
         public float Price { get; set; }
         public virtual ICollection<FreeCode> FreeCodes { get; set; }
         //Server=(localdb)\\mssqllocaldb;Database=GameDB;Trusted_Connection=True
-        //Server=tcp:gamestorecrosplatformdbserver.database.windows.net,1433;Initial Catalog = GameStoreDb; Persist Security Info=False;User ID = vkhoi; Password=Thatvuhai_7595;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout = 30;
+        //Server=tcp:gamestorecrosplatformdbserver.database.windows.net,1433;Initial Catalog = GameDb; Persist Security Info=False;User ID = vkhoi; Password=Thatvuhai_7595;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout = 30;
         public Game()
         {
             Id = Guid.NewGuid();

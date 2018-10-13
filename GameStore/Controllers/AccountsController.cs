@@ -82,7 +82,7 @@ namespace GameStore.Controllers
         }
 
 
-        [HttpPut("{id}")]
+        [HttpPut("buy/{id}")]
         [AllowAnonymous]
         public async Task<IServiceResult> BuyGameAsync([FromRoute] string id, [FromBody] RegisterDTOs registerDTOs)
         {
@@ -90,6 +90,32 @@ namespace GameStore.Controllers
             {
                 var userId = id.ToGuid();
                 var user = await _context.Users.Where(u => u.Id == userId).Include(u => u.WishGames).Include(u => u.Games).SingleAsync();
+
+                _mapper.Map<RegisterDTOs, User>(registerDTOs, user);
+                if (!await _unitOfWork.CompleteAsync())
+                {
+                    throw new SaveFailedException(nameof(user));
+                }
+
+                user = await _userManager.FindByIdAsync(id);
+                var usersDto = _mapper.Map<User, UserDTOs>(user);
+                return new ServiceResult(payload: usersDto);
+            }
+            catch (Exception e)
+            {
+                return new ServiceResult(false, e.Message);
+            }
+        }
+
+
+        [HttpPut("like/{id}")]
+        [AllowAnonymous]
+        public async Task<IServiceResult> LikeGameAsync([FromRoute] string id, [FromBody] RegisterDTOs registerDTOs)
+        {
+            try
+            {
+                var userId = id.ToGuid();
+                var user = await _context.Users.Where(u => u.Id == userId).Include(u => u.WishGames).SingleAsync();
 
                 _mapper.Map<RegisterDTOs, User>(registerDTOs, user);
                 if (!await _unitOfWork.CompleteAsync())
