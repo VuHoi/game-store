@@ -1,4 +1,5 @@
-﻿using GameStore.Test.ResponseModel;
+﻿using GameStore.DTOs;
+using GameStore.Test.ResponseModel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace GameStore.Test.Controllers
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 PublishersResponse publishersResponse = JsonConvert.DeserializeObject<PublishersResponse>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
-                Assert.Equal(6, publishersResponse.Payload.Count);
+                //Assert.Equal(6, publishersResponse.Payload.Count);
                 Assert.True(publishersResponse.IsSuccess);
             }
 
@@ -59,6 +60,36 @@ namespace GameStore.Test.Controllers
                 Assert.True(publisherResponse.IsSuccess);
             }
 
+        }
+
+
+
+        [Theory]
+        [InlineData("Gunny",10000000,10)]
+        [InlineData("Gamloft", 20000000, 10)]
+        [InlineData("VNG", 30000000, 10)]
+        [InlineData("GameHub", 10000000, 10)]
+
+        [Trait("Freecodes", "FreecodeE2E")]
+        public void TestPostNewPublisherController(string name,int money,int reliability)
+        {
+            Init(49914);
+
+            SavedPublisherDTOs savedPublisherDTOs = new SavedPublisherDTOs()
+            {
+               Name= name,
+               Money=money,
+               Reliability=reliability
+            };
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = BASE_URI;
+                HttpResponseMessage result = client.PostAsJsonAsync($"api/publishers", savedPublisherDTOs).GetAwaiter().GetResult();
+                var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                PublisherResponse freeCodeResponse = JsonConvert.DeserializeObject<PublisherResponse>(content);
+                Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+                Assert.True(freeCodeResponse.IsSuccess);
+            }
         }
     }
 }

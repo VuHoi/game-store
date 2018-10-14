@@ -86,9 +86,6 @@ namespace GameStore.Test.Controllers
                 FreeCodeResponse freeCodeResponse = JsonConvert.DeserializeObject<FreeCodeResponse>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
                 Assert.True(freeCodeResponse.IsSuccess);
-
-                //HttpResponseMessage delete=client.DeleteAsync($"api/freecodes/{savedFreeCodeDTOsDemo.Id}").GetAwaiter().GetResult();
-
             }
         }
 

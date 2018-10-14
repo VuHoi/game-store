@@ -1,5 +1,7 @@
-﻿using GameStore.Test.ResponseModel;
+﻿using GameStore.DTOs;
+using GameStore.Test.ResponseModel;
 using Newtonsoft.Json;
+using GameStore.Extention;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -7,6 +9,7 @@ using System.Net.Http;
 using System.Text;
 using Xunit;
 using Xunit.Abstractions;
+using System.Collections.ObjectModel;
 
 namespace GameStore.Test.Controllers
 {
@@ -57,6 +60,52 @@ namespace GameStore.Test.Controllers
                 Assert.True(gamesResponse.IsSuccess);
             }
 
+        }
+
+
+        [Theory]
+        [InlineData("Gunny", "0E276582-8CA0-4DE3-A465-ED721530AE2C", "EC1FB6A2-755E-4561-903C-D504845D9475",
+            "42DFEC91-42C7-49F5-B449-B4E22E895088", "42DFEC91-42C7-49F5-B449-B4E22E895088",
+            "EC1FB6A2-755E-4561-903C-D504845D9475", 3,"logo here",
+            "video here","content here ", "EC1FB6A2-755E-4561-903C-D504845D9475",
+            "42DFEC91-42C7-49F5-B449-B4E22E895088", 1000000
+            )]
+
+
+        [Trait("Freecodes", "FreecodeE2E")]
+        public void TestPostNewGameController(string name, string publisherId,
+                                              string members1, string members2,
+                                              string favoriteMembers1, string favoriteMembers2,
+                                              float rating,string logo,
+                                              string videoUrl,string content,
+                                              string categories1,string categories2,
+                                              float price)
+        {
+            Init(49914);
+
+            SavedGameDTOs savedGameDTOs = new SavedGameDTOs()
+            {
+                Name = name,
+                PublisherId = publisherId.ToGuid(),
+                Members = new Collection<Guid>{ members1.ToGuid(), members2.ToGuid()},
+                FavoriteMembers= new Collection<Guid> { favoriteMembers1.ToGuid(), favoriteMembers2.ToGuid() },
+                Rating=rating,
+                Logo=logo,
+                VideoUrl=videoUrl,
+                Content=content,
+                Categories=new Collection<Guid> { categories1.ToGuid(),categories2.ToGuid()},
+                Price=price,
+                PurchaseDate=DateTime.Now
+            };
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = BASE_URI;
+                HttpResponseMessage result = client.PostAsJsonAsync($"api/games", savedGameDTOs).GetAwaiter().GetResult();
+                var contentResult = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                GameResponse gameResponse = JsonConvert.DeserializeObject<GameResponse>(contentResult);
+                Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+                Assert.True(gameResponse.IsSuccess);
+            }
         }
     }
 }
