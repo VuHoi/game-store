@@ -86,6 +86,28 @@ namespace GameStore.Controllers
                 return new ServiceResult(false, e.Message);
             }
         }
+
+
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<IServiceResult> GetUserByIdAsync([FromRoute] Guid id)
+        {
+            try
+            {
+                var user = await _context.Users
+                    .Include(u => u.WishGames)
+                    .ThenInclude(g => g.Game)
+                    .Include(u => u.Games).SingleOrDefaultAsync(u=> u.Id == id);
+                var usersDto = _mapper.Map<User, UserDTOs>(user);
+                return new ServiceResult(payload: usersDto);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Can not get all users. {e.Message}");
+                return new ServiceResult(false, e.Message);
+            }
+        }
+
         [HttpPut("{id}")]
         [AllowAnonymous]
         public async Task<IServiceResult> EditGameAsync([FromRoute] string id, [FromBody] RegisterDTOs registerDTOs)
@@ -143,14 +165,14 @@ namespace GameStore.Controllers
 
         [HttpPut("like/{id}")]
         [AllowAnonymous]
-        public async Task<IServiceResult> LikeGameAsync([FromRoute] string id, [FromBody] RegisterDTOs registerDTOs)
+        public async Task<IServiceResult> LikeGameAsync([FromRoute] string id, [FromBody] LikeGameDTOs likeGameDTOs)
         {
             try
             {
                 var userId = id.ToGuid();
                 var user = await _context.Users.Where(u => u.Id == userId).Include(u => u.WishGames).SingleAsync();
 
-                _mapper.Map<RegisterDTOs, User>(registerDTOs, user);
+                _mapper.Map<LikeGameDTOs, User>(likeGameDTOs, user);
                 if (!await _unitOfWork.CompleteAsync())
                 {
                     throw new SaveFailedException(nameof(user));

@@ -17,7 +17,7 @@ namespace GameStore.Controllers
 
     [Produces("application/json")]
     [Route("/api/[controller]")]
-    public class CategoriesController:Controller
+    public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -44,9 +44,11 @@ namespace GameStore.Controllers
             catch (Exception e)
             {
                 _logger.LogError($"Can get all categories. {e.Message}");
-                return new ServiceResult(false,message: e.Message);
+                return new ServiceResult(false, message: e.Message);
             }
         }
 
+
+        
     }
 }

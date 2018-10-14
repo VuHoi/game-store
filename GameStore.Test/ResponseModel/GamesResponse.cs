@@ -5,10 +5,12 @@ using System.Text;
 
 namespace GameStore.Test.ResponseModel
 {
-    class GamesResponse
+    class GamesResponse : BaseResponse
     {
-        public bool IsSuccess { get; set; }
-        public string Message { get; set; }
         public List<GameDTOs> Payload { get; set; }
+    }
+    class GameResponse : BaseResponse
+    {
+        public GameDTOs Payload { get; set; }
     }
 }

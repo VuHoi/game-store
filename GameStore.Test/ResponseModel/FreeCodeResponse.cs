@@ -5,10 +5,13 @@ using System.Text;
 
 namespace GameStore.Test.ResponseModel
 {
-    class FreeCodeResponse
+    class FreeCodesResponse: BaseResponse
     {
-        public bool IsSuccess { get; set; }
-        public string Message { get; set; }
         public List<FreeCodeDTOs> Payload { get; set; }
+    }
+
+    class FreeCodeResponse : BaseResponse
+    {
+        public FreeCodeDTOs Payload { get; set; }
     }
 }

@@ -35,7 +35,7 @@ namespace GameStore.Data
             builder.ChangeIdentityTableNames();
             //seed data 
 
-            //builder.SeedData();
+            builder.SeedData();
         }
 
     }

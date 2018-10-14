@@ -38,8 +38,10 @@ namespace GameStore.Test.Controllers
                 Assert.Equal(5, categoriesResponse.Payload.Count);
                 Assert.True(categoriesResponse.IsSuccess);
             }
-
         }
-    
+
+        
+
+
     }
 }
