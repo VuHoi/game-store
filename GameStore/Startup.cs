@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace GameStore
 {
@@ -70,6 +71,8 @@ namespace GameStore
                     return Task.CompletedTask;
                 };
             });
+            services.AddSwaggerGen(c =>
+                c.SwaggerDoc("v1", new Info { Title = "Game store APIs", Description = "API endpoints for Game store" }));
             services.AddDependencies();
             services.AddAutoMapper();
             services.AddMvc();
@@ -89,7 +92,12 @@ namespace GameStore
             }
 
             app.UseStaticFiles();
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Game store API V1");
+                c.RoutePrefix = string.Empty;
+            });
             app.UseMvc();
         }
     }

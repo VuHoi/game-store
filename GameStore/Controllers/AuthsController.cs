@@ -47,21 +47,21 @@ namespace GameStore.Controllers
 
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IEnumerable<string> CheckClaim()
-        {
-            List<string> result = new List<string>();
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //public IEnumerable<string> CheckClaim()
+        //{
+        //    List<string> result = new List<string>();
 
-            result.AddRange(User.Claims.Select(c => c.ToString()));
+        //    result.AddRange(User.Claims.Select(c => c.ToString()));
 
-            var roles = ((ClaimsIdentity)User.Identity).Claims
-                .Where(c => c.Type == ClaimTypes.Role)
-                .Select(c => c.Value);
+        //    var roles = ((ClaimsIdentity)User.Identity).Claims
+        //        .Where(c => c.Type == ClaimTypes.Role)
+        //        .Select(c => c.Value);
 
-            result.AddRange(roles);
+        //    result.AddRange(roles);
 
-            return result;
-        }
+        //    return result;
+        //}
 
         [HttpPost]
         [AllowAnonymous]
