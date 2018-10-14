@@ -31,16 +31,16 @@ namespace GameStore.Test.Controllers
             BASE_URL = $"http://gamestorecrosplatform.azurewebsites.net";
             BASE_URI = new Uri(BASE_URL);
 
-            var assemblyName = typeof(GameStore.Startup).GetTypeInfo().Assembly.FullName;
+            //var assemblyName = typeof(GameStore.Startup).GetTypeInfo().Assembly.FullName;
 
-            _webhost = WebHost.CreateDefaultBuilder(null)
-                              .UseStartup(assemblyName)
-                              .UseEnvironment("Development")
-                              .UseKestrel()
-                              .UseUrls(BASE_URL)
-                              .Build();
+            //_webhost = WebHost.CreateDefaultBuilder(null)
+            //                  .UseStartup(assemblyName)
+            //                  .UseEnvironment("Development")
+            //                  .UseKestrel()
+            //                  .UseUrls(BASE_URL)
+            //                  .Build();
 
-            _webhost.Start();
+            //_webhost.Start();
         }
 
         public void Dispose()

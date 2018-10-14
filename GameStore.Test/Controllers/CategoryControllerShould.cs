@@ -27,7 +27,7 @@ namespace GameStore.Test.Controllers
         [Trait("Category", "CategoryE2E")]
         public void TestGetAllCategoriesController()
         {
-          
+            Init(49913);
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = BASE_URI;

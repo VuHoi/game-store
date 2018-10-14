@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GameStore.Test.ResponseModel
 {
-    class PubishersResponse
+    class PublishersResponse
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; }

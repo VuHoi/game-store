@@ -10,19 +10,20 @@ using Xunit.Abstractions;
 
 namespace GameStore.Test.Controllers
 {
-  public  class FreecodeControllerShould : BaseController
+    [Collection("FreecodeE2E")]
+    public  class FreecodeControllerShould : BaseController
     {
         private readonly ITestOutputHelper _output;
 
-        public FreecodeControllerShould(ITestOutputHelper output) : base(49913)
+        public FreecodeControllerShould(ITestOutputHelper output) : base(49914)
         {
             _output = output;
         }
         [Fact]
-        [Trait("Category", "CategoryE2E")]
+        [Trait("Freecodes", "FreecodeE2E")]
         public void TestGetAllFreeCodesController()
         {
-
+            Init(49914);
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = BASE_URI;
