@@ -12,8 +12,10 @@ namespace GameStore.Mapping.ProfileMap
         protected override void CreateMap()
         {
             CreateMap<FreeCode, FreeCodeDTOs>();
+            CreateMap<FreeCodeDTOs, FreeCode>();
 
-            CreateMap<CategoryDTOs, Category>();
+            CreateMap<SavedFreeCodeDTOs, FreeCode>();
+            CreateMap<FreeCode, SavedFreeCodeDTOs>();
         }
     }
 }

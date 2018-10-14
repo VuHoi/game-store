@@ -12,6 +12,6 @@ namespace GameStore.Test.ResponseModel
 
     class FreeCodeResponse : BaseResponse
     {
-        public FreeCodeDTOs Payload { get; set; }
+        public string Payload { get; set; }
     }
 }

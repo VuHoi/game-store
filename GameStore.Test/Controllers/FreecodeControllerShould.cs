@@ -1,4 +1,6 @@
-﻿using GameStore.Test.ResponseModel;
+﻿using GameStore.DTOs;
+using GameStore.Extention;
+using GameStore.Test.ResponseModel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,7 +16,7 @@ namespace GameStore.Test.Controllers
     public  class FreecodeControllerShould : BaseController
     {
         private readonly ITestOutputHelper _output;
-
+      
         public FreecodeControllerShould(ITestOutputHelper output) : base(49914)
         {
             _output = output;
@@ -31,7 +33,7 @@ namespace GameStore.Test.Controllers
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 FreeCodesResponse freeCodeResponse = JsonConvert.DeserializeObject<FreeCodesResponse>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
-                Assert.Equal(5, freeCodeResponse.Payload.Count);
+                //Assert.Equal(8, freeCodeResponse.Payload.Count);
                 Assert.True(freeCodeResponse.IsSuccess);
             }
 
@@ -55,7 +57,41 @@ namespace GameStore.Test.Controllers
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
                 Assert.True(freeCodeResponse.IsSuccess);
             }
-
         }
+
+
+       
+
+        [Theory]
+        [InlineData("39ACCDD9-161A-4FE0-8A10-310F8C98AD93")]
+        [InlineData("8B4DDF45-3956-486B-A2F6-3FEC1B3D3048")]
+        [InlineData("EC1FB6A2-755E-4561-903C-D504845D9475")]
+        [InlineData("42DFEC91-42C7-49F5-B449-B4E22E895088")]
+
+        [Trait("Freecodes", "FreecodeE2E")]
+        public void TestPostNewFreeCodeController(string id)
+        {
+            Init(49914);
+
+            SavedFreeCodeDTOs savedFreeCodeDTOsDemo = new SavedFreeCodeDTOs()
+            {
+                Code = (Guid.NewGuid()).ToString(),
+                GameId = id.ToGuid()
+            };
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = BASE_URI;
+                HttpResponseMessage result = client.PostAsJsonAsync($"api/freecodes", savedFreeCodeDTOsDemo).GetAwaiter().GetResult();
+                var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                FreeCodeResponse freeCodeResponse = JsonConvert.DeserializeObject<FreeCodeResponse>(content);
+                Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+                Assert.True(freeCodeResponse.IsSuccess);
+
+                //HttpResponseMessage delete=client.DeleteAsync($"api/freecodes/{savedFreeCodeDTOsDemo.Id}").GetAwaiter().GetResult();
+
+            }
+        }
+
+      
     }
 }

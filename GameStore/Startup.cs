@@ -21,18 +21,36 @@ namespace GameStore
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+            CurrentEnvironment = env;
+
         }
 
         public IConfiguration Configuration { get; }
 
+        public IHostingEnvironment CurrentEnvironment { get; set; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            if (CurrentEnvironment.IsDevelopment())
+            {
+                services.AddDbContext<ApplicationDbContext>(option => option.UseInMemoryDatabase());
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            }
+         
 
             services.AddIdentity<User, ApplicationRole>(options =>
             {

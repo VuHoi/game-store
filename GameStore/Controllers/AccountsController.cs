@@ -27,7 +27,7 @@ namespace GameStore.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<AccountsController> _logger;
+        private readonly ILogger<AccountsController>_logger;
         private readonly IMapper _mapper;
         public AccountsController(IUnitOfWorkCommon unitOfWork,
                                   UserManager<User> userManager,
@@ -41,6 +41,7 @@ namespace GameStore.Controllers
             _signInManager = signInManager;
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpPost]

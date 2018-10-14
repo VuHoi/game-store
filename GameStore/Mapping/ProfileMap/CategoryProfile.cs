@@ -15,6 +15,8 @@ namespace GameStore.Mapping.ProfileMap
              .ForMember(pr => pr.Games, opt => opt.MapFrom(p => p.Games));
 
             CreateMap<CategoryDTOs, Category>();
+            CreateMap<SavedCategoryDTOs, Category>();
+            CreateMap<Category, SavedCategoryDTOs>();
         }
     }
 }
