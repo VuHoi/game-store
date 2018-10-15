@@ -32,7 +32,7 @@ namespace GameStore.Test.Controllers
                 client.BaseAddress = BASE_URI;
                 HttpResponseMessage result = client.GetAsync("api/games").GetAwaiter().GetResult();
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                GamesResponse gamesResponse = JsonConvert.DeserializeObject<GamesResponse>(content);
+                Responses<GameDTOs> gamesResponse = JsonConvert.DeserializeObject<Responses<GameDTOs>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
                 Assert.Equal(5, gamesResponse.Payload.Count);
                 Assert.True(gamesResponse.IsSuccess);
@@ -55,7 +55,7 @@ namespace GameStore.Test.Controllers
                 client.BaseAddress = BASE_URI;
                 HttpResponseMessage result = client.GetAsync($"api/games/{Id}").GetAwaiter().GetResult();
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                GameResponse gamesResponse = JsonConvert.DeserializeObject<GameResponse>(content);
+                Response<GameDTOs> gamesResponse = JsonConvert.DeserializeObject<Response<GameDTOs>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
                 Assert.True(gamesResponse.IsSuccess);
             }
@@ -102,7 +102,7 @@ namespace GameStore.Test.Controllers
                 client.BaseAddress = BASE_URI;
                 HttpResponseMessage result = client.PostAsJsonAsync($"api/games", savedGameDTOs).GetAwaiter().GetResult();
                 var contentResult = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                GameResponse gameResponse = JsonConvert.DeserializeObject<GameResponse>(contentResult);
+                Response<GameDTOs> gameResponse = JsonConvert.DeserializeObject<Response<GameDTOs>>(contentResult);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
                 Assert.True(gameResponse.IsSuccess);
             }

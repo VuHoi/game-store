@@ -30,7 +30,7 @@ namespace GameStore.Test.Controllers
                 client.BaseAddress = BASE_URI;
                 HttpResponseMessage result = client.GetAsync("api/publishers").GetAwaiter().GetResult();
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                PublishersResponse publishersResponse = JsonConvert.DeserializeObject<PublishersResponse>(content);
+                Responses<PublisherDTOs> publishersResponse = JsonConvert.DeserializeObject<Responses<PublisherDTOs>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
                 //Assert.Equal(6, publishersResponse.Payload.Count);
                 Assert.True(publishersResponse.IsSuccess);
@@ -55,7 +55,7 @@ namespace GameStore.Test.Controllers
                 client.BaseAddress = BASE_URI;
                 HttpResponseMessage result = client.GetAsync($"api/publishers/{Id}").GetAwaiter().GetResult();
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                PublisherResponse publisherResponse = JsonConvert.DeserializeObject<PublisherResponse>(content);
+                Response<PublisherDTOs> publisherResponse = JsonConvert.DeserializeObject<Response<PublisherDTOs>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
                 Assert.True(publisherResponse.IsSuccess);
             }
@@ -86,7 +86,7 @@ namespace GameStore.Test.Controllers
                 client.BaseAddress = BASE_URI;
                 HttpResponseMessage result = client.PostAsJsonAsync($"api/publishers", savedPublisherDTOs).GetAwaiter().GetResult();
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                PublisherResponse freeCodeResponse = JsonConvert.DeserializeObject<PublisherResponse>(content);
+                Response<PublisherDTOs> freeCodeResponse = JsonConvert.DeserializeObject<Response<PublisherDTOs>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
                 Assert.True(freeCodeResponse.IsSuccess);
             }

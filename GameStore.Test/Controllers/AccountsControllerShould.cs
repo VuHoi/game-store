@@ -33,7 +33,7 @@ namespace GameStore.Test.Controllers
                 client.BaseAddress = BASE_URI;
                 HttpResponseMessage result = client.GetAsync("api/accounts").GetAwaiter().GetResult();
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                UsersResponse freeCodeResponse = JsonConvert.DeserializeObject<UsersResponse>(content);
+                Responses<UserDTOs> freeCodeResponse = JsonConvert.DeserializeObject<Responses<UserDTOs>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
                 Assert.Equal(5, freeCodeResponse.Payload.Count);
                 Assert.True(freeCodeResponse.IsSuccess);
@@ -57,7 +57,7 @@ namespace GameStore.Test.Controllers
                 client.BaseAddress = BASE_URI;
                 HttpResponseMessage result = client.GetAsync($"api/accounts/{Id}").GetAwaiter().GetResult();
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                UserResponse freeCodeResponse = JsonConvert.DeserializeObject<UserResponse>(content);
+                Response<UserDTOs> freeCodeResponse = JsonConvert.DeserializeObject<Response<UserDTOs>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
                 Assert.True(freeCodeResponse.IsSuccess);
             }

@@ -33,7 +33,7 @@ namespace GameStore.Test.Controllers
                 client.BaseAddress = BASE_URI;
                 HttpResponseMessage result = client.GetAsync("api/categories").GetAwaiter().GetResult();
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                CategoriesResponse categoriesResponse = JsonConvert.DeserializeObject<CategoriesResponse>(content);
+                Responses<CategoryDTOs> categoriesResponse = JsonConvert.DeserializeObject<Responses<CategoryDTOs>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
                 Assert.Equal(5, categoriesResponse.Payload.Count);
                 Assert.True(categoriesResponse.IsSuccess);
