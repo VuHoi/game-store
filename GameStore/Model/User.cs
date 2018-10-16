@@ -17,6 +17,7 @@ namespace GameStore.Model
         public User()
         {
             this.Games = new Collection<UserGame>();
+            this.WishGames = new Collection<WishGame>();
         }
     }
 }

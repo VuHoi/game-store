@@ -46,11 +46,12 @@ namespace GameStore.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IServiceResult> Register([FromBody] RegisterDTOs register)
+        public async Task<IServiceResult> Register([FromBody] UserSaved register)
         {
-            try
-            {
-                var user = _mapper.Map<RegisterDTOs, User>(register);
+            //try
+            //{
+
+                var user = _mapper.Map<UserSaved, User>(register);
                 var result = await _userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {
@@ -60,12 +61,12 @@ namespace GameStore.Controllers
                     return new ServiceResult(payload: currentUser.Email);
                 }
                 return new ServiceResult(false, message: result.Errors.ToString());
-            }
-            catch (Exception e)
-            {
-                _logger.LogError($"Can not create user {register.Email}. {e.Message}");
-                return new ServiceResult(false, message: e.Message);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    _logger.LogError($"Can not create user {register.Email}. {e.Message}");
+            //    return new ServiceResult(false, message: e.Message);
+            //}
         }
 
         [HttpGet]

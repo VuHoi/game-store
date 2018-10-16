@@ -28,10 +28,8 @@ namespace GameStore
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
-
             Configuration = builder.Build();
             CurrentEnvironment = env;
-
         }
 
         public IConfiguration Configuration { get; }
@@ -41,16 +39,18 @@ namespace GameStore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            if (CurrentEnvironment.IsDevelopment())
-            {
-                services.AddDbContext<ApplicationDbContext>(option => option.UseInMemoryDatabase());
-            }
-            else
-            {
-                services.AddDbContext<ApplicationDbContext>(options =>
-                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            }
-         
+            //if (CurrentEnvironment.IsDevelopment())
+            //{
+            //    services.AddDbContext<ApplicationDbContext>(option => option.UseInMemoryDatabase());
+
+            //}
+            //else
+            //{
+            //    services.AddDbContext<ApplicationDbContext>(options =>
+            //      options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //}
+            services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<User, ApplicationRole>(options =>
             {
