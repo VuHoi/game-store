@@ -28,6 +28,7 @@ namespace GameStore.EntityConfigurations
                 .WithMany(p => p.Games)
                 .HasForeignKey(a => a.PublisherId)
                 .OnDelete(DeleteBehavior.Cascade);
+            
 
             builder
                 .Property(f => f.PublisherId)

@@ -21,6 +21,7 @@ namespace GameStore.Data
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<CategoryGame> CategoryGames { get; set; }
+        public DbSet<Image> Images { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
         {

@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace GameStore.EntityConfigurations
 {
-    public class CategoryConfigurations : IEntityTypeConfiguration<Category>
+    public class ImageConfigurations : IEntityTypeConfiguration<Image>
     {
-        public void Configure(EntityTypeBuilder<Category> builder)
+        public void Configure(EntityTypeBuilder<Image> builder)
         {
-           
+         
         }
+
+      
     }
 }

@@ -13,7 +13,8 @@ namespace GameStore.Model
         public virtual ICollection<Game> Games { get; set; }
         public int Money { get; set; }
         public int Reliability { get; set; }
-        
+        public virtual Image Image { get; set; }
+        public Guid ImageId { get; set; }
         public Publisher()
         {
             Id = Guid.NewGuid();

@@ -15,7 +15,7 @@ namespace GameStore.Model
         public virtual ICollection<UserGame> Members { get; set; }
         public virtual ICollection<WishGame> FavoriteMembers { get; set; }
         public float Rating { get; set; }
-        public string Logo { get; set; }
+        //public ICollection<Image> Images { get; set; }
         public string VideoUrl { get; set; }
         public string Content { get; set; }
         public virtual ICollection<CategoryGame> Categories { get; set; }
@@ -31,6 +31,7 @@ namespace GameStore.Model
             Members = new Collection<UserGame>();
             FavoriteMembers = new Collection<WishGame>();
             FreeCodes = new Collection<FreeCode>();
+            //Images = new Collection<Image>();
             Categories = new Collection<CategoryGame>();
             ReleaseDate= DateTime.Now;
         }
