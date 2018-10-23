@@ -12,7 +12,11 @@ namespace GameStore.EntityConfigurations
 
         public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<User> builder)
         {
-            
+            builder
+                   .HasOne(a => a.ImageUser)
+                   .WithOne(p => p.User)
+                   .HasForeignKey<User>(a => a.ImageUserId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

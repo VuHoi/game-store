@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace GameStore.Model
 {
-    public class ImageGame
+    public class ImageGame:Image
     {
+        public Game Game { get; set; }
+        public Guid GameId { get; set; }
     }
 }

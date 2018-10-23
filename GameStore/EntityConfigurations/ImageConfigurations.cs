@@ -8,11 +8,15 @@ using System.Threading.Tasks;
 
 namespace GameStore.EntityConfigurations
 {
-    public class ImageConfigurations : IEntityTypeConfiguration<Image>
+    public class ImageConfigurations : IEntityTypeConfiguration<ImageGame>
     {
-        public void Configure(EntityTypeBuilder<Image> builder)
+        public void Configure(EntityTypeBuilder<ImageGame> builder)
         {
-         
+            builder
+           .HasOne(a => a.Game)
+           .WithMany(p => p.ImageGames)
+           .HasForeignKey(a => a.GameId)
+           .OnDelete(DeleteBehavior.Cascade);
         }
 
       

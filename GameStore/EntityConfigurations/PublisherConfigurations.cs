@@ -12,7 +12,11 @@ namespace GameStore.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Publisher> builder)
         {
-       
+                      builder
+                      .HasOne(a => a.ImagePublisher)
+                      .WithOne(p => p.Publisher)
+                      .HasForeignKey<Publisher>(a => a.ImagePublisherId)
+                      .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

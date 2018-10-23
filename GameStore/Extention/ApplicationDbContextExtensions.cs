@@ -21,6 +21,7 @@ namespace GameStore.Extention
             modelBuilder.ApplyConfiguration(new WishGameConfigurations());
             modelBuilder.ApplyConfiguration(new CodeFreeConfigurations());
             modelBuilder.ApplyConfiguration(new CategoryGameConfigurations());
+            modelBuilder.ApplyConfiguration(new ImageConfigurations());
         }
 
         public static void ChangeIdentityTableNames(this ModelBuilder modelBuilder)
