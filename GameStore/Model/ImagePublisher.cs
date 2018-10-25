@@ -9,5 +9,6 @@ namespace GameStore.Model
     {
         public Publisher Publisher { get; set; }
         public Guid PublisherId { get; set; }
+
     }
 }
