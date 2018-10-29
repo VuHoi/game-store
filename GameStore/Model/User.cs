@@ -15,7 +15,6 @@ namespace GameStore.Model
         public string FullName { get; set; }
         public virtual ICollection<WishGame> WishGames { get; set; }
         public ImageUser ImageUser { get; set; }
-        public Guid ImageUserId { get; set; }
         public User()
         {
             this.Games = new Collection<UserGame>();

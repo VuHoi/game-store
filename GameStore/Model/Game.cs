@@ -16,6 +16,7 @@ namespace GameStore.Model
         public virtual ICollection<WishGame> FavoriteMembers { get; set; }
         public float Rating { get; set; }
         public ICollection<ImageGame> ImageGames { get; set; }
+       
         public string VideoUrl { get; set; }
         public string Content { get; set; }
         public virtual ICollection<CategoryGame> Categories { get; set; }

@@ -12,11 +12,7 @@ namespace GameStore.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-                   builder
-                   .HasOne(a => a.ImageCategory )
-                   .WithOne(p => p.Category)
-                   .HasForeignKey<Category>(a => a.ImageCategoryId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                 
 
         }
     }
