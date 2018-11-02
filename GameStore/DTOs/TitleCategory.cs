@@ -8,6 +8,5 @@ namespace GameStore.DTOs
     public class TitleCategory
     {
         public string Title { get; set; }
-        public string Image { get; set; }
     }
 }

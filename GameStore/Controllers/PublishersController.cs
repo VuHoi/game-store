@@ -40,7 +40,7 @@ namespace GameStore.Controllers
         {
             try
             {
-                var publishers = await _context.Publishers.Include(c => c.Games).ToListAsync();
+                var publishers = await _context.Publishers.Include(c => c.Games).Include(p=>p.ImagePublisher).ToListAsync();
                 var publishersDto = _mapper.Map<IEnumerable<Publisher>, IEnumerable<PublisherDTOs>>(publishers);
                 return new ServiceResult(payload: publishersDto);
             }

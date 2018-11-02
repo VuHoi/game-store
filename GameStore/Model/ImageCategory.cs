@@ -7,7 +7,7 @@ namespace GameStore.Model
 {
     public class ImageCategory:Image
     {
-        public Category Category { get; set; }
+        //public Category Category { get; set; }
         public Guid CategoryId { get; set; }
     }
 }

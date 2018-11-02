@@ -7,7 +7,7 @@ namespace GameStore.Model
 {
     public class ImagePublisher:Image
     {
-        public Publisher Publisher { get; set; }
+        //public Publisher Publisher { get; set; }
         public Guid PublisherId { get; set; }
 
     }

@@ -48,6 +48,7 @@ namespace GameStore.Controllers
                 .Include(g => g.Categories)
                 .ThenInclude(c => c.Category)
                 .Include(g => g.Publisher)
+                .Include(g=>g.ImageGames)
                 .ToListAsync();
 
                 var gamesDto = _mapper.Map<IEnumerable<Game>, IEnumerable<GameDTOs>>(games);

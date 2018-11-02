@@ -15,17 +15,17 @@ namespace GameStore.DTOs
         public virtual ICollection<TitleUser> Members { get; set; }
         public virtual ICollection<TitleUser> FavoriteMembers { get; set; }
         public float Rating { get; set; }
-        public string Logo { get; set; }
         public string VideoUrl { get; set; }
         public string Content { get; set; }
         public virtual ICollection<TitleCategory> Categories { get; set; }
         public DateTime PurchaseDate { get; set; }
-
+        public ICollection<TitleImagePublisher> ImageGames { get; set; }
         public GameDTOs()
         {
             Members = new Collection<TitleUser>();
             FavoriteMembers = new Collection<TitleUser>();
             Categories = new Collection<TitleCategory>();
+            ImageGames = new Collection<TitleImagePublisher>();
         }
     }
 }

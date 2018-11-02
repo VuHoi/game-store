@@ -12,7 +12,8 @@ namespace GameStore.Mapping.ProfileMap
         protected override void CreateMap()
         {
             CreateMap<Publisher, PublisherDTOs>()
-            .ForMember(pr => pr.Games, opt => opt.MapFrom(p => p.Games));
+            .ForMember(pr => pr.Games, opt => opt.MapFrom(p => p.Games))
+            .ForMember(pr => pr.ImagePublisher, opt => opt.MapFrom(p => p.ImagePublisher));
 
             CreateMap<PublisherDTOs, Publisher>();
             
