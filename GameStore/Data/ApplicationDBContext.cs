@@ -24,7 +24,7 @@ namespace GameStore.Data
         public DbSet<ImageGame> ImageGames { get; set; }
         public DbSet<ImageUser> ImageUsers { get; set; }
         public DbSet<ImagePublisher> ImagePublishers { get; set; }
-        public DbSet<ImageCategory> ImageCategories { get; set; }
+        //public DbSet<ImageCategory> ImageCategories { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
         {
@@ -39,7 +39,7 @@ namespace GameStore.Data
             builder.ChangeIdentityTableNames();
             //seed data 
 
-            //builder.SeedData();
+            builder.SeedData();
         }
 
     }

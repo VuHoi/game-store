@@ -21,7 +21,10 @@ namespace GameStore.Mapping.ProfileMap
                .ForMember(pr => pr.Categories,
                    opt => opt.MapFrom(p =>
                        p.Categories.Select(pc => pc.Category)))
-               .ForMember(pr => pr.Publisher, opt => opt.MapFrom(p => p.Publisher));
+               .ForMember(pr => pr.Publisher, opt => opt.MapFrom(p => p.Publisher))
+                   .ForMember(pr => pr.ImageGames,
+                     opt => opt.MapFrom(p => p.ImageGames))
+                   ;
 
             CreateMap<GameDTOs, Game>();
 

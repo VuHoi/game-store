@@ -10,8 +10,8 @@ namespace GameStore.Model
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public virtual ImageCategory ImageCategory { get; set; }
-        public Guid ImageCategoryId { get; set; }
+        //public virtual ImageCategory ImageCategory { get; set; }
+        //public Guid ImageCategoryId { get; set; }
         public virtual ICollection<CategoryGame> Games { get; set; }
 
         public Category()

@@ -14,7 +14,7 @@ namespace GameStore.Model
         public int Money { get; set; }
         public int Reliability { get; set; }
         public virtual ImagePublisher ImagePublisher { get; set; }
-        public Guid ImagePublisherId { get; set; }
+        //public Guid ImagePublisherId { get; set; }
         public Publisher()
         {
             Id = Guid.NewGuid();

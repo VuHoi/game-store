@@ -78,7 +78,9 @@ namespace GameStore.Controllers
                 var users = await _context.Users
                     .Include(u => u.WishGames)
                     .ThenInclude(g => g.Game)
-                    .Include(u => u.Games).ToListAsync();
+                    .Include(u => u.Games)
+                    .Include(u=>u.ImageUser).ToListAsync();
+
                 var usersDto = _mapper.Map<IEnumerable<User>, IEnumerable<UserDTOs>>(users);
                 return new ServiceResult(payload: usersDto);
             }
