@@ -20,6 +20,7 @@ namespace GameStore.DTOs
         public virtual ICollection<TitleCategory> Categories { get; set; }
         public DateTime PurchaseDate { get; set; }
         public ICollection<TitleImagePublisher> ImageGames { get; set; }
+        public float Price { get; set; }
         public GameDTOs()
         {
             Members = new Collection<TitleUser>();
