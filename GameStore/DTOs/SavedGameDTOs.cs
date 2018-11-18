@@ -18,6 +18,7 @@ namespace GameStore.DTOs
         public string Content { get; set; }
         public virtual ICollection<Guid> Categories { get; set; }
         public DateTime PurchaseDate { get; set; }
+        public virtual ICollection <TitleImagePublisher> ImageGames { get; set; }
         public float Price { get; set; }
     }
 }
