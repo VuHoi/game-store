@@ -1,4 +1,5 @@
-﻿using GameStore.Data;
+﻿using GameStore.Common;
+using GameStore.Data;
 using GameStore.Model;
 using GameStore.Model.Resource;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -65,18 +66,22 @@ namespace GameStore.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] Login login)
+        public async Task<IServiceResult> Login([FromBody] Login login)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(login.Email);
+                if (user == null)
+                {
+                    user = await _userManager.FindByNameAsync(login.Email);
+                }
                 if (user != null)
                 {
                     var result = await _signInManager.CheckPasswordSignInAsync(user, login.Password, lockoutOnFailure: false);
 
                     if (!result.Succeeded)
                     {
-                        return Unauthorized();
+                        return new ServiceResult(false, message: "Password Incorrect");
                     }
 
                     var token = GenerateAccessToken(user, Guid.NewGuid().ToString(), GetAccessTokenExpire());
@@ -102,11 +107,11 @@ namespace GameStore.Controllers
 
                     await SaveRefreshToken(refreshToken);
 
-                    return Ok(new { token = jwtWriter.WriteToken(token), refreshToken = refreshToken.Token });
+                    return new ServiceResult(true, payload: new { token = jwtWriter.WriteToken(token), refreshToken = refreshToken.Token,id= user.Id });
                 }
             }
 
-            return BadRequest();
+            return new ServiceResult(false, message: "UserName or Password Incorrect");
         }
 
 

@@ -27,7 +27,6 @@ namespace GameStore.Mapping.ProfileMap
                 .ForMember(g => g.PhoneNumber, opt => opt.Ignore());
 
             CreateMap<RegisterDTOs, User>()
-               .ForMember(g => g.UserName, opt => opt.MapFrom(u => u.Email))
                .ForMember(p => p.WishGames, opt => opt.Ignore())
                .AfterMap((pr, p) =>
                {
@@ -87,7 +86,7 @@ namespace GameStore.Mapping.ProfileMap
                        p.WishGames.Remove(pc);
                });
             CreateMap<UserSaved, User>()
-                 .ForMember(g => g.UserName, opt => opt.MapFrom(u => u.Email))
+                 //.ForMember(g => g.UserName, opt => opt.MapFrom(u => u.Email))
                 .ForMember(p => p.WishGames, opt => opt.Ignore())
                  .ForMember(p => p.Games, opt => opt.Ignore());
             CreateMap<User, UserSaved>();

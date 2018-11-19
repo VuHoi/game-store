@@ -48,25 +48,25 @@ namespace GameStore.Controllers
         [AllowAnonymous]
         public async Task<IServiceResult> Register([FromBody] UserSaved register)
         {
-            //try
-            //{
+            try
+            {
 
                 var user = _mapper.Map<UserSaved, User>(register);
                 var result = await _userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {
-                    var currentUser = await _userManager.FindByNameAsync(user.Email);
+                    var currentUser = await _userManager.FindByNameAsync(user.UserName);
                     var role = await _userManager.AddToRoleAsync(currentUser, "User");
                     _logger.LogInformation($"User {user.Email} with id: {user.Id} created.");
                     return new ServiceResult(payload: currentUser.Email);
                 }
                 return new ServiceResult(false, message: result.Errors.ToString());
-            //}
-            //catch (Exception e)
-            //{
-            //    _logger.LogError($"Can not create user {register.Email}. {e.Message}");
-            //    return new ServiceResult(false, message: e.Message);
-            //}
+        }
+            catch (Exception e)
+            {
+                _logger.LogError($"Can not create user {register.Email}. {e.Message}");
+                return new ServiceResult(false, message: e.Message);
+            }
         }
 
         [HttpGet]

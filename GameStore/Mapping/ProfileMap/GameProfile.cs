@@ -68,19 +68,6 @@ namespace GameStore.Mapping.ProfileMap
                    foreach (var pc in removedCategories)
                        p.Categories.Remove(pc);
                });
-               //.ForMember(p=>p.ImageGames,opt=>opt.Ignore())
-               // .AfterMap((pr, p) =>
-               // {
-               //     var addedImage = pr.ImageGames.Where(img => p.ImageGames.All(pc => pc.GameId != img.Id))
-               //         .Select(img => new ImageGame() { GameId = pr.Id, Id = img.Id, UrlLocal=img.UrlLocal,UrlOnline=img.UrlOnline }).ToList();
-               //     foreach (var pc in addedImage)
-               //         p.ImageGames.Add(pc);
-
-               //     var removedImages =
-               //         p.ImageGames.Where(c => !pr.ImageGames.Contains(c.Id)).ToList();
-               //     foreach (var pc in removedCategories)
-               //         p.Categories.Remove(pc);
-               // }); 
             CreateMap<Game, SavedGameDTOs>();
 
 

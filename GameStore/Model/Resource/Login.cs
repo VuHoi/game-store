@@ -9,7 +9,7 @@ namespace GameStore.Model.Resource
     public class Login
     {
         [Required]
-        [EmailAddress]
+        //[EmailAddress]
         public string Email { get; set; }
 
         [Required]
