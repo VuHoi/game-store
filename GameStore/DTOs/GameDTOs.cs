@@ -19,14 +19,14 @@ namespace GameStore.DTOs
         public string Content { get; set; }
         public virtual ICollection<TitleCategory> Categories { get; set; }
         public DateTime PurchaseDate { get; set; }
-        public ICollection<TitleImagePublisher> ImageGames { get; set; }
+        public ICollection<TitleImage> ImageGames { get; set; }
         public float Price { get; set; }
         public GameDTOs()
         {
             Members = new Collection<TitleUser>();
             FavoriteMembers = new Collection<TitleUser>();
             Categories = new Collection<TitleCategory>();
-            ImageGames = new Collection<TitleImagePublisher>();
+            ImageGames = new Collection<TitleImage>();
         }
     }
 }

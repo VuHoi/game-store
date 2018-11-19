@@ -14,7 +14,7 @@ namespace GameStore.DTOs
         public virtual ICollection<TitleGame> Games { get; set; }
         public int Money { get; set; }
         public int Reliability { get; set; }
-        public virtual TitleImagePublisher ImagePublisher { get; set; }
+        public virtual TitleImage ImagePublisher { get; set; }
         public PublisherDTOs()
         {
             Games = new Collection<TitleGame>();

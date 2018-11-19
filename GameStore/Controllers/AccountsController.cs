@@ -58,7 +58,7 @@ namespace GameStore.Controllers
                     var currentUser = await _userManager.FindByNameAsync(user.UserName);
                     var role = await _userManager.AddToRoleAsync(currentUser, "User");
                     _logger.LogInformation($"User {user.Email} with id: {user.Id} created.");
-                    return new ServiceResult(payload: currentUser.Email);
+                    return new ServiceResult(payload: currentUser.UserName);
                 }
                 return new ServiceResult(false, message: result.Errors.ToString());
         }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GameStore.DTOs
 {
-    public class TitleImagePublisher
+    public class TitleImage
     {
         public Guid Id { get; set; }
         public string UrlOnline { get; set; }
