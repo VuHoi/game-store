@@ -32,7 +32,7 @@ namespace GameStore.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("game")]
         [AllowAnonymous]
         public async Task<IServiceResult> PostImageGame([FromBody] ImageGame imageGame)
         {
@@ -55,7 +55,7 @@ namespace GameStore.Controllers
 
 
 
-        [HttpPost]
+        [HttpPost("user")]
         [AllowAnonymous]
         public async Task<IServiceResult> PostImageUser([FromBody] ImageUser imageUser)
         {
@@ -77,7 +77,7 @@ namespace GameStore.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("publisher")]
         [AllowAnonymous]
         public async Task<IServiceResult> PostImagePublisher([FromBody] ImagePublisher imagePublisher)
         {
