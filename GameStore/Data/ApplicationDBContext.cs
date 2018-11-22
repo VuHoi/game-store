@@ -18,6 +18,7 @@ namespace GameStore.Data
         public DbSet<FreeCode> FreeCodes { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<UserGame> UserGames { get; set; }
+        public DbSet<WishGame> WishGame { get; set; }
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<CategoryGame> CategoryGames { get; set; }

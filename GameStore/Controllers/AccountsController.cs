@@ -140,56 +140,50 @@ namespace GameStore.Controllers
 
 
 
-        [HttpPut("buy/{id}")]
+        [HttpPost("buy/{id}")]
         [AllowAnonymous]
-        public async Task<IServiceResult> BuyGameAsync([FromRoute] string id, [FromBody] BuyGameDTOs registerDTOs)
+        public async Task<IServiceResult> BuyGameAsync([FromRoute] string id, [FromBody] Guid GameId)
         {
             try
             {
                 var userId = id.ToGuid();
-                var user = await _context.Users.Where(u => u.Id == userId).Include(u => u.WishGames).Include(u => u.Games).SingleAsync();
-
-                _mapper.Map<BuyGameDTOs, User>(registerDTOs, user);
+                UserGame userGame = new UserGame() { GameId = GameId, PurchaseDate = new DateTime(), UserId = userId };
+                _context.UserGames.Add(userGame);
                 if (!await _unitOfWork.CompleteAsync())
                 {
-                    throw new SaveFailedException(nameof(user));
+                    throw new SaveFailedException(nameof(userGame));
                 }
-
-                user = await _userManager.FindByIdAsync(id);
-                var usersDto = _mapper.Map<User, UserDTOs>(user);
-                return new ServiceResult(payload: usersDto);
+                _logger.LogInformation($"User  {userGame.UserId} bought game id: {userGame.GameId} .");
+                return new ServiceResult(payload: userGame.GameId);
             }
             catch (Exception e)
             {
-                _logger.LogError($"Can not buy this game. {e.Message}");
-                return new ServiceResult(false, e.Message);
+                _logger.LogError($"Can't create  a free code {GameId}. {e.Message}");
+                return new ServiceResult(false, message: e.Message);
             }
         }
 
 
-        [HttpPut("like/{id}")]
+        [HttpPost("like/{id}")]
         [AllowAnonymous]
-        public async Task<IServiceResult> LikeGameAsync([FromRoute] string id, [FromBody] LikeGameDTOs likeGameDTOs)
+        public async Task<IServiceResult> LikeGameAsync([FromRoute] string id, [FromBody] Guid GameId)
         {
             try
             {
                 var userId = id.ToGuid();
-                var user = await _context.Users.Where(u => u.Id == userId).Include(u => u.WishGames).SingleAsync();
-
-                _mapper.Map<LikeGameDTOs, User>(likeGameDTOs, user);
+                WishGame wishGame = new WishGame() { GameId = GameId , UserId = userId };
+                _context.WishGame.Add(wishGame);
                 if (!await _unitOfWork.CompleteAsync())
                 {
-                    throw new SaveFailedException(nameof(user));
+                    throw new SaveFailedException(nameof(wishGame));
                 }
-
-                user = await _userManager.FindByIdAsync(id);
-                var usersDto = _mapper.Map<User, UserDTOs>(user);
-                return new ServiceResult(payload: usersDto);
+                _logger.LogInformation($"User  {wishGame.UserId} like game id: {wishGame.GameId} .");
+                return new ServiceResult(payload: wishGame.GameId);
             }
             catch (Exception e)
             {
-                _logger.LogError($"Can not add this game. {e.Message}");
-                return new ServiceResult(false, e.Message);
+                _logger.LogError($"Can't create  a free code {GameId}. {e.Message}");
+                return new ServiceResult(false, message: e.Message);
             }
         }
 
