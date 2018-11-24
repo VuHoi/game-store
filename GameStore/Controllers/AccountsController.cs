@@ -142,12 +142,12 @@ namespace GameStore.Controllers
 
         [HttpPost("buy/{id}")]
         [AllowAnonymous]
-        public async Task<IServiceResult> BuyGameAsync([FromRoute] string id, [FromBody] Guid GameId)
+        public async Task<IServiceResult> BuyGameAsync([FromRoute] string id, [FromBody] LikeGameDTOs LikeGameDTOs)
         {
             try
             {
                 var userId = id.ToGuid();
-                UserGame userGame = new UserGame() { GameId = GameId, PurchaseDate = new DateTime(), UserId = userId };
+                UserGame userGame = new UserGame() { GameId = LikeGameDTOs.Id, PurchaseDate = new DateTime(), UserId = userId };
                 _context.UserGames.Add(userGame);
                 if (!await _unitOfWork.CompleteAsync())
                 {
@@ -158,7 +158,7 @@ namespace GameStore.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError($"Can't create  a free code {GameId}. {e.Message}");
+                _logger.LogError($"Can't create  a free code {LikeGameDTOs.Id}. {e.Message}");
                 return new ServiceResult(false, message: e.Message);
             }
         }
@@ -166,12 +166,12 @@ namespace GameStore.Controllers
 
         [HttpPost("like/{id}")]
         [AllowAnonymous]
-        public async Task<IServiceResult> LikeGameAsync([FromRoute] string id, [FromBody] Guid GameId)
+        public async Task<IServiceResult> LikeGameAsync([FromRoute] string id, [FromBody] LikeGameDTOs LikeGameDTOs)
         {
             try
             {
                 var userId = id.ToGuid();
-                WishGame wishGame = new WishGame() { GameId = GameId , UserId = userId };
+                WishGame wishGame = new WishGame() { GameId = LikeGameDTOs.Id, UserId = userId };
                 _context.WishGame.Add(wishGame);
                 if (!await _unitOfWork.CompleteAsync())
                 {
@@ -182,7 +182,7 @@ namespace GameStore.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError($"Can't create  a free code {GameId}. {e.Message}");
+                _logger.LogError($"Can't create  a free code {LikeGameDTOs.Id}. {e.Message}");
                 return new ServiceResult(false, message: e.Message);
             }
         }
