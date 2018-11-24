@@ -50,8 +50,9 @@ namespace GameStore.Controllers
         {
             try
             {
-
-                var user = _mapper.Map<UserSaved, User>(register);
+                var user = await _userManager.FindByEmailAsync(register.Email);
+                if (user != null) return new ServiceResult(false, message: "Duplicate user");
+                user = _mapper.Map<UserSaved, User>(register);
                 var result = await _userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
                 {
@@ -60,7 +61,7 @@ namespace GameStore.Controllers
                     _logger.LogInformation($"User {user.Email} with id: {user.Id} created.");
                     return new ServiceResult(payload: currentUser.UserName);
                 }
-                return new ServiceResult(false, message: result.Errors.ToString());
+                return new ServiceResult(false, payload: result.Errors);
         }
             catch (Exception e)
             {
@@ -78,6 +79,7 @@ namespace GameStore.Controllers
                 var users = await _context.Users
                     .Include(u => u.WishGames)
                     .ThenInclude(g => g.Game)
+                    .ThenInclude(g=>g.ImageGames)
                     .Include(u => u.Games)
                     .Include(u=>u.ImageUser).ToListAsync();
 
