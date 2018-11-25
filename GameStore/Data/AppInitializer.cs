@@ -1,4 +1,5 @@
-﻿using GameStore.Model;
+﻿using GameStore.Extention;
+using GameStore.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,16 +14,15 @@ namespace GameStore.Data
         private readonly ApplicationDbContext _context;
         private readonly ILogger _logger;
 
-        public AppInitializer(ApplicationDbContext context, ILogger logger)
+        public AppInitializer(ApplicationDbContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public async Task Seed()
         {
 
-            if (!_context.Games.Any())
+            //if (!_context.Games.Any())
             {
                 var games = new List<Game>()
                     {
@@ -120,6 +120,14 @@ namespace GameStore.Data
                     VideoUrl ="URL Video here" ,
                     PublisherId = _context.Publishers.FirstOrDefault(p=>p.Name == "Kiloo").Id},
                     };
+
+                games[0].Members = new List<UserGame>() { new UserGame() { GameId = games[0].Id, UserId = "6f6ee7d9-e3a8-4f27-d1f7-08d6520f9b99".ToGuid() } };
+                games[1].Members = new List<UserGame>() { new UserGame() { GameId = games[1].Id, UserId = "6f6ee7d9-e3a8-4f27-d1f7-08d6520f9b99".ToGuid() } };
+                games[2].Members = new List<UserGame>() { new UserGame() { GameId = games[2].Id, UserId = "6f6ee7d9-e3a8-4f27-d1f7-08d6520f9b99".ToGuid() } };
+                games[3].Members = new List<UserGame>() { new UserGame() { GameId = games[3].Id, UserId = "6f6ee7d9-e3a8-4f27-d1f7-08d6520f9b99".ToGuid() } };
+                games[4].Members = new List<UserGame>() { new UserGame() { GameId = games[4].Id, UserId = "6f6ee7d9-e3a8-4f27-d1f7-08d6520f9b99".ToGuid() } };
+                games[5].Members = new List<UserGame>() { new UserGame() { GameId = games[5].Id, UserId = "6f6ee7d9-e3a8-4f27-d1f7-08d6520f9b99".ToGuid() } };
+                games[6].Members = new List<UserGame>() { new UserGame() { GameId = games[6].Id, UserId = "6f6ee7d9-e3a8-4f27-d1f7-08d6520f9b99".ToGuid() } };
                 await _context.AddRangeAsync(games);
                 await _context.SaveChangesAsync();
             }

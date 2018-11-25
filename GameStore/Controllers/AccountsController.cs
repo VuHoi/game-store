@@ -81,6 +81,7 @@ namespace GameStore.Controllers
                     .ThenInclude(g => g.Game)
                     .ThenInclude(g=>g.ImageGames)
                     .Include(u => u.Games)
+                     .ThenInclude(g => g.Game)
                     .Include(u=>u.ImageUser).ToListAsync();
 
                 var usersDto = _mapper.Map<IEnumerable<User>, IEnumerable<UserDTOs>>(users);
