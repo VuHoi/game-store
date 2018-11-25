@@ -19,11 +19,11 @@ namespace GameStore
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-            .UseKestrel(options =>
-            {
-                options.Limits.MaxConcurrentUpgradedConnections = 100;
-            })
-            .Build();
+                   .UseStartup<Startup>()
+                   .UseKestrel(options =>
+                    {
+                        options.Limits.MaxConcurrentUpgradedConnections = 100;
+                    })
+                   .Build();
     }
 }

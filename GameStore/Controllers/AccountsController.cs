@@ -61,7 +61,7 @@ namespace GameStore.Controllers
                     _logger.LogInformation($"User {user.Email} with id: {user.Id} created.");
                     return new ServiceResult(payload: currentUser.UserName);
                 }
-                return new ServiceResult(false, payload: result.Errors);
+                return new ServiceResult(false, message: " Duplicate UserName " );
         }
             catch (Exception e)
             {
@@ -114,7 +114,7 @@ namespace GameStore.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("edit-game/{id}")]
         [AllowAnonymous]
         public async Task<IServiceResult> EditGameAsync([FromRoute] string id, [FromBody] RegisterDTOs registerDTOs)
         {
@@ -124,6 +124,7 @@ namespace GameStore.Controllers
                 var user = await _context.Users.Where(u => u.Id == userId).Include(u => u.WishGames).Include(u => u.Games).SingleAsync();
 
                 _mapper.Map<RegisterDTOs, User>(registerDTOs, user);
+               
                 if (!await _unitOfWork.CompleteAsync())
                 {
                     throw new SaveFailedException(nameof(user));
@@ -140,6 +141,32 @@ namespace GameStore.Controllers
             }
         }
 
+        [HttpPut("edit-user/{id}")]
+        [AllowAnonymous]
+        public async Task<IServiceResult> EditUserAsync([FromRoute] string id, [FromBody] RegisterDTOs registerDTOs)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+
+                user.UserName = registerDTOs.UserName;
+                user.PhoneNumber = registerDTOs.PhoneNumber; 
+                user.Email = registerDTOs.Email;
+                user.SecurityStamp = (Guid.NewGuid()).ToString();
+                user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, registerDTOs.Password);
+                await _userManager.UpdateAsync(user);
+                await _unitOfWork.CompleteAsync();
+
+                user = await _userManager.FindByIdAsync(id);
+                var usersDto = _mapper.Map<User, UserDTOs>(user);
+                return new ServiceResult(payload: usersDto);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Can not edit user {registerDTOs.Email} because  {e.Message}");
+                return new ServiceResult(false, e.Message);
+            }
+        }
 
 
         [HttpPost("buy/{id}")]
