@@ -77,6 +77,7 @@ namespace GameStore.Controllers
                 .Include(g => g.Categories)
                 .ThenInclude(c => c.Category)
                 .Include(g => g.Publisher)
+                .Include(g => g.ImageGames)
                 .SingleOrDefaultAsync(g => g.Id == id);
                 if (game == null)
                 {

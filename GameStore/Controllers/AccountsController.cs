@@ -104,7 +104,10 @@ namespace GameStore.Controllers
                 var user = await _context.Users
                     .Include(u => u.WishGames)
                     .ThenInclude(g => g.Game)
-                    .Include(u => u.Games).ThenInclude(g => g.Game)
+                     .ThenInclude(g => g.ImageGames)
+                    .Include(u => u.Games)
+                    .ThenInclude(g => g.Game)
+                     .ThenInclude(g => g.ImageGames)
                      .Include(u => u.ImageUser)
                     .SingleOrDefaultAsync(u=> u.Id == id);
                 var usersDto = _mapper.Map<User, UserDTOs>(user);
