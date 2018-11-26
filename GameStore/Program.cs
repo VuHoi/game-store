@@ -17,22 +17,22 @@ namespace GameStore
         {
            
             var host = BuildWebHost(args);
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+            //using (var scope = host.Services.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
 
-                try
-                {
-                    // Set the databas
-                    var context = services.GetRequiredService<ApplicationDbContext>();
-                    AppInitializer initializer = new AppInitializer(context);
-                    initializer.Seed().Wait();
-                }
-                catch (Exception ex)
-                {
-                }
+            //    try
+            //    {
+            //        // Set the databas
+            //        var context = services.GetRequiredService<ApplicationDbContext>();
+            //        AppInitializer initializer = new AppInitializer(context);
+            //        initializer.Seed().Wait();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //    }
                 host.Run();
-            }
+            //}
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
