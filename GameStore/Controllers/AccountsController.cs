@@ -115,6 +115,7 @@ namespace GameStore.Controllers
             }
         }
 
+        // wrong model but  api is true when input haven't  inforation of user 
         [HttpPut("edit-game/{id}")]
         [AllowAnonymous]
         public async Task<IServiceResult> EditGameAsync([FromRoute] string id, [FromBody] RegisterDTOs registerDTOs)
@@ -141,14 +142,31 @@ namespace GameStore.Controllers
                 return new ServiceResult(false, e.Message);
             }
         }
-
+        // wrong model but  api is true when input haven't  inforation of game 
         [HttpPut("edit-user/{id}")]
         [AllowAnonymous]
         public async Task<IServiceResult> EditUserAsync([FromRoute] string id, [FromBody] RegisterDTOs registerDTOs)
         {
             try
             {
+                // check duplicate  user 
                 var user = await _userManager.FindByIdAsync(id);
+                if(user==null) return new ServiceResult(false, " User not exited on system");
+                if (user.Email != registerDTOs.Email )
+                {
+                    if ((await _userManager.FindByEmailAsync(registerDTOs.Email) != null) )
+                    {
+                        return new ServiceResult(false, " Email exited on db");
+                    }
+                }
+
+                if(user.UserName != registerDTOs.UserName)
+                {
+                    if ((await _userManager.FindByNameAsync(registerDTOs.UserName) != null))
+                    {
+                        return new ServiceResult(false, "Username exited on db");
+                    }
+                }
 
                 user.UserName = registerDTOs.UserName;
                 user.PhoneNumber = registerDTOs.PhoneNumber; 
@@ -157,7 +175,6 @@ namespace GameStore.Controllers
                 user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, registerDTOs.Password);
                 await _userManager.UpdateAsync(user);
                 await _unitOfWork.CompleteAsync();
-
                 user = await _userManager.FindByIdAsync(id);
                 var usersDto = _mapper.Map<User, UserDTOs>(user);
                 return new ServiceResult(payload: usersDto);
