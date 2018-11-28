@@ -27,7 +27,7 @@ namespace GameStore.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<AccountsController>_logger;
+        private readonly ILogger<AccountsController> _logger;
         private readonly IMapper _mapper;
         public AccountsController(IUnitOfWorkCommon unitOfWork,
                                   UserManager<User> userManager,
@@ -61,8 +61,8 @@ namespace GameStore.Controllers
                     _logger.LogInformation($"User {user.Email} with id: {user.Id} created.");
                     return new ServiceResult(payload: currentUser.UserName);
                 }
-                return new ServiceResult(false, message: " Duplicate UserName " );
-        }
+                return new ServiceResult(false, message: " Duplicate UserName ");
+            }
             catch (Exception e)
             {
                 _logger.LogError($"Can not create user {register.Email}. {e.Message}");
@@ -79,10 +79,10 @@ namespace GameStore.Controllers
                 var users = await _context.Users
                     .Include(u => u.WishGames)
                     .ThenInclude(g => g.Game)
-                    .ThenInclude(g=>g.ImageGames)
+                    .ThenInclude(g => g.ImageGames)
                     .Include(u => u.Games)
                      .ThenInclude(g => g.Game)
-                    .Include(u=>u.ImageUser).ToListAsync();
+                    .Include(u => u.ImageUser).ToListAsync();
 
                 var usersDto = _mapper.Map<IEnumerable<User>, IEnumerable<UserDTOs>>(users);
                 return new ServiceResult(payload: usersDto);
@@ -109,7 +109,7 @@ namespace GameStore.Controllers
                     .ThenInclude(g => g.Game)
                      .ThenInclude(g => g.ImageGames)
                      .Include(u => u.ImageUser)
-                    .SingleOrDefaultAsync(u=> u.Id == id);
+                    .SingleOrDefaultAsync(u => u.Id == id);
                 var usersDto = _mapper.Map<User, UserDTOs>(user);
                 return new ServiceResult(payload: usersDto);
             }
@@ -131,7 +131,7 @@ namespace GameStore.Controllers
                 var user = await _context.Users.Where(u => u.Id == userId).Include(u => u.WishGames).Include(u => u.Games).SingleAsync();
 
                 _mapper.Map<RegisterDTOs, User>(registerDTOs, user);
-               
+
                 if (!await _unitOfWork.CompleteAsync())
                 {
                     throw new SaveFailedException(nameof(user));
@@ -156,16 +156,16 @@ namespace GameStore.Controllers
             {
                 // check duplicate  user 
                 var user = await _userManager.FindByIdAsync(id);
-                if(user==null) return new ServiceResult(false, " User not exited on system");
-                if (user.Email != registerDTOs.Email )
+                if (user == null) return new ServiceResult(false, " User not exited on system");
+                if (user.Email != registerDTOs.Email)
                 {
-                    if ((await _userManager.FindByEmailAsync(registerDTOs.Email) != null) )
+                    if ((await _userManager.FindByEmailAsync(registerDTOs.Email) != null))
                     {
                         return new ServiceResult(false, " Email exited on db");
                     }
                 }
 
-                if(user.UserName != registerDTOs.UserName)
+                if (user.UserName != registerDTOs.UserName)
                 {
                     if ((await _userManager.FindByNameAsync(registerDTOs.UserName) != null))
                     {
@@ -174,7 +174,7 @@ namespace GameStore.Controllers
                 }
 
                 user.UserName = registerDTOs.UserName;
-                user.PhoneNumber = registerDTOs.PhoneNumber; 
+                user.PhoneNumber = registerDTOs.PhoneNumber;
                 user.Email = registerDTOs.Email;
                 user.SecurityStamp = (Guid.NewGuid()).ToString();
                 user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, registerDTOs.Password);
@@ -194,15 +194,53 @@ namespace GameStore.Controllers
         }
 
 
+        [HttpPut("recharge/{id}")]
+        [AllowAnonymous]
+        public async Task<IServiceResult> RechargeAsync([FromRoute] string id, [FromBody] MoneyDto MoneyDto)
+        {
+            try
+            {
+                var userId = id.ToGuid();
+                var user = await _context.Users.Where(u => u.Id == userId).SingleAsync();
+
+                user.Money = MoneyDto.Money;
+
+                if (!await _unitOfWork.CompleteAsync())
+                {
+                    throw new SaveFailedException(nameof(user));
+                }
+
+                user = await _userManager.FindByIdAsync(id);
+                var usersDto = _mapper.Map<User, UserDTOs>(user);
+                return new ServiceResult(payload: usersDto);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"User {id} can't recharge  {e.Message}");
+                return new ServiceResult(false, e.Message);
+            }
+        }
+
         [HttpPost("buy/{id}")]
         [AllowAnonymous]
         public async Task<IServiceResult> BuyGameAsync([FromRoute] string id, [FromBody] LikeGameDTOs LikeGameDTOs)
         {
             try
             {
+                // add game  and user  into user game table 
                 var userId = id.ToGuid();
-                UserGame userGame = new UserGame() { GameId = LikeGameDTOs.Id, PurchaseDate = new DateTime(), UserId = userId };
+                var game = await _context.Games.SingleOrDefaultAsync(g=>g.Id==LikeGameDTOs.Id);
+                UserGame userGame = new UserGame() { GameId = LikeGameDTOs.Id, PurchaseDate = DateTime.Now, UserId = userId };
                 _context.UserGames.Add(userGame);
+                // update money for publisher
+                Publisher publisher = await _context.Publishers.SingleOrDefaultAsync(p => p.Id == game.PublisherId);
+                publisher.Money += game.Price;
+                // update money for user 
+                User user = await _context.Users.SingleOrDefaultAsync(p => p.Id == userId);
+                user.Money -= game.Price;
+
+               if(user.Money<0) return new ServiceResult(false, message: "Your account don't enought money to buy this game");
+                // save change 
                 if (!await _unitOfWork.CompleteAsync())
                 {
                     throw new SaveFailedException(nameof(userGame));
@@ -216,6 +254,8 @@ namespace GameStore.Controllers
                 return new ServiceResult(false, message: e.Message);
             }
         }
+
+
 
 
         [HttpPost("like/{id}")]

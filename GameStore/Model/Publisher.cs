@@ -11,13 +11,14 @@ namespace GameStore.Model
         public Guid Id { get; set; }
         public string Name { get; set; }
         public virtual ICollection<Game> Games { get; set; }
-        public int Money { get; set; }
+        public float Money { get; set; }
         public int Reliability { get; set; }
         public virtual ImagePublisher ImagePublisher { get; set; }
         public Publisher()
         {
             Id = Guid.NewGuid();
             Games = new Collection<Game>();
+            this.Money = 0f;
         }
 
     }
