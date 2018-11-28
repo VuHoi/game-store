@@ -178,6 +178,8 @@ namespace GameStore.Controllers
                 user.Email = registerDTOs.Email;
                 user.SecurityStamp = (Guid.NewGuid()).ToString();
                 user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, registerDTOs.Password);
+                user.FullName = registerDTOs.FullName;
+                user.Hobbies = registerDTOs.Hobbies;
                 await _userManager.UpdateAsync(user);
                 await _unitOfWork.CompleteAsync();
                 user = await _userManager.FindByIdAsync(id);
