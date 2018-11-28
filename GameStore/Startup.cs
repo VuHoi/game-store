@@ -50,11 +50,11 @@ namespace GameStore
             //      options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             //}
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
 
-            // services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(
-            //Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(
+           Configuration.GetConnectionString("AmazonConnection")));
 
 
             services.AddIdentity<User, ApplicationRole>(options =>
