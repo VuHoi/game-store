@@ -21,6 +21,7 @@ namespace GameStore.DTOs
         public DateTime PurchaseDate { get; set; }
         public ICollection<TitleImage> ImageGames { get; set; }
         public float Price { get; set; }
+        public float sale { get; set; }
         public GameDTOs()
         {
             Members = new Collection<TitleUser>();

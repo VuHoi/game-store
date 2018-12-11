@@ -61,7 +61,70 @@ namespace GameStore.Controllers
             }
         }
 
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
+        [HttpGet("sale")]
+        [AllowAnonymous]
+        public async Task<IServiceResult> GetSaledGames()
+        {
+            try
+            {
+                var games = await _context.Games.Where(g => g.sale > 0)
+                .Include(g => g.Members)
+                .ThenInclude(m => m.User)
+                .Include(g => g.FavoriteMembers)
+                .ThenInclude(m => m.User)
+                .Include(g => g.Categories)
+                .ThenInclude(c => c.Category)
+                .Include(g => g.Publisher)
+                .Include(g => g.ImageGames)
+                
+                .ToListAsync();
 
+                var gamesDto = _mapper.Map<IEnumerable<Game>, IEnumerable<GameDTOs>>(games);
+                return new ServiceResult(payload: gamesDto);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Can't get all games. {e.Message}");
+                return new ServiceResult(false, e.Message);
+            }
+        }
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
+        [HttpPut("sale{id}")]
+        [AllowAnonymous]
+        public async Task<IServiceResult> ModifySaledByGameId([FromRoute] Guid id, [FromBody] SavedSale saleValue)
+        {
+           
+            try
+            {
+                var game = await _context.Games.SingleOrDefaultAsync(g => g.Id == id);
+                game.sale = saleValue.Sale;
+
+                _context.Entry(game).State = EntityState.Modified;
+
+                if (!await _unitOfWork.CompleteAsync())
+                {
+                    throw new SaveFailedException(nameof(game));
+                }
+
+                game = await _context.Games
+                .Include(g => g.Members)
+                .ThenInclude(m => m.User)
+                .Include(g => g.FavoriteMembers)
+                .ThenInclude(m => m.User)
+                .Include(g => g.Categories)
+                .ThenInclude(c => c.Category)
+                .Include(g => g.Publisher)
+                .SingleOrDefaultAsync(g => g.Id == game.Id);
+
+                var recallGameDTO = _mapper.Map<Game, GameDTOs>(game);
+                return new ServiceResult(payload: recallGameDTO);
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                return new ServiceResult(false, message: e.Message);
+            }
+        }
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,User")]
         [HttpGet("{id}")]
         [AllowAnonymous]

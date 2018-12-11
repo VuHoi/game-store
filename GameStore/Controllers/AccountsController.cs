@@ -281,6 +281,31 @@ namespace GameStore.Controllers
             }
         }
 
+
+        [HttpPost("buy/freecode/{id}")]
+        [AllowAnonymous]
+        public async Task<IServiceResult> BuyGameByFreecodeAsync([FromRoute] string id, [FromBody] TitleFreeCode freecode)
+        {
+            try
+            {
+                var userId = id.ToGuid();
+                var freeCode = await _context.FreeCodes.FirstOrDefaultAsync(f => f.Code == freecode.Code);
+                UserGame userGame = new UserGame() { GameId = freeCode.GameId, PurchaseDate = DateTime.Now, UserId = userId };
+                _context.UserGames.Add(userGame);
+                if (!await _unitOfWork.CompleteAsync())
+                {
+                    throw new SaveFailedException(nameof(userGame));
+                }
+                return new ServiceResult(isSuccess:true , payload: freeCode);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Can't add free codes of {freecode.Code} for user. {e.Message}");
+                return new ServiceResult(false, message: e.Message);
+            }
+        }
+
+
     }
 
 

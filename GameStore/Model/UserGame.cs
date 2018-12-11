@@ -15,7 +15,7 @@ namespace GameStore.Model
 
         public UserGame()
         {
-            PurchaseDate = new DateTime();
+            PurchaseDate = DateTime.Now;
         }
     }
 }

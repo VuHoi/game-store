@@ -46,18 +46,18 @@ namespace GameStore
             //}
             //else
             //{
-            //    services.AddDbContext<ApplicationDbContext>(options =>
-            //      options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            //}
+            services.AddDbContext<ApplicationDbContext>(options =>
+              options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+        //}
 
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //        options.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
+        //services.AddDbContext<ApplicationDbContext>(options =>
+        //        options.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(
-           Configuration.GetConnectionString("AmazonConnection")));
+        // services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(
+        //Configuration.GetConnectionString("AmazonConnection")));
 
 
-            services.AddIdentity<User, ApplicationRole>(options =>
+        services.AddIdentity<User, ApplicationRole>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 8;
