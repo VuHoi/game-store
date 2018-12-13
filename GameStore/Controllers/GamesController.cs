@@ -68,7 +68,7 @@ namespace GameStore.Controllers
         {
             try
             {
-                var games = await _context.Games.Where(g => g.sale > 0)
+                var games = await _context.Games.Where(g => g.Sale > 0)
                 .Include(g => g.Members)
                 .ThenInclude(m => m.User)
                 .Include(g => g.FavoriteMembers)
@@ -98,8 +98,9 @@ namespace GameStore.Controllers
             try
             {
                 var game = await _context.Games.SingleOrDefaultAsync(g => g.Id == id);
-                game.sale = saleValue.Sale;
-
+                game.Sale = saleValue.Sale;
+                game.StartDateSale = saleValue.StartDateSale;
+                game.EndDateSale = saleValue.EndDateSale;
                 _context.Entry(game).State = EntityState.Modified;
 
                 if (!await _unitOfWork.CompleteAsync())
