@@ -24,7 +24,7 @@ namespace GameStore.Test.Controllers
         [Trait("Publisher", "GameE2E")]
         public void TestGetAllPublishersController()
         {
-            Init(49914);
+            Init(49900);
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = BASE_URI;
@@ -40,16 +40,16 @@ namespace GameStore.Test.Controllers
 
 
         [Theory]
-        [InlineData("0703A244-3012-4725-B9A5-2E3D5AF9F0FE")]
-        [InlineData("B49D6EDB-140D-46CC-BD0B-482BE03C8C46")]
-        [InlineData("773F8D2E-B12D-4A9F-91D9-9E5DA568F0EB")]
-        [InlineData("DC23F861-FF43-45AF-845C-AF4514DF22A2")]
-        [InlineData("CA1ACA5F-CDEE-43A6-BDCB-E596D1B909A5")]
-        [InlineData("0E276582-8CA0-4DE3-A465-ED721530AE2C")]
+        [InlineData("0703A244-3012-4725-B9A5-2E3D5AF9F0FE",49905)]
+        [InlineData("B49D6EDB-140D-46CC-BD0B-482BE03C8C46",49906)]
+        [InlineData("773F8D2E-B12D-4A9F-91D9-9E5DA568F0EB",49907)]
+        [InlineData("DC23F861-FF43-45AF-845C-AF4514DF22A2",49908)]
+        [InlineData("CA1ACA5F-CDEE-43A6-BDCB-E596D1B909A5",49909)]
+        [InlineData("0E276582-8CA0-4DE3-A465-ED721530AE2C",49910)]
         [Trait("Publisher", "GameE2E")]
-        public void TestGetPublisherByIdController(string Id)
+        public void TestGetPublisherByIdController(string Id,int port)
         {
-            Init(49914);
+            Init(port);
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = BASE_URI;
@@ -65,15 +65,15 @@ namespace GameStore.Test.Controllers
 
 
         [Theory]
-        [InlineData("Gunny",10000000,10)]
-        [InlineData("Gamloft", 20000000, 10)]
-        [InlineData("VNG", 30000000, 10)]
-        [InlineData("GameHub", 10000000, 10)]
+        [InlineData("Gunny",10000000,10, 49901)]
+        [InlineData("Gamloft", 20000000, 10, 49902)]
+        [InlineData("VNG", 30000000, 10, 49903)]
+        [InlineData("GameHub", 10000000, 10,49904)]
 
         [Trait("Freecodes", "FreecodeE2E")]
-        public void TestPostNewPublisherController(string name,int money,int reliability)
+        public void TestPostNewPublisherController(string name,int money,int reliability,int port)
         {
-            Init(49914);
+            Init(port);
 
             SavedPublisherDTOs savedPublisherDTOs = new SavedPublisherDTOs()
             {

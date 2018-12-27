@@ -27,12 +27,13 @@ namespace GameStore.Test.Controllers
         [Trait("Account", "AccountE2E")]
         public void TestGetAllUsersController()
         {
-            Init(49912);
+            Init(49911);
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = BASE_URI;
                 HttpResponseMessage result = client.GetAsync("api/accounts").GetAwaiter().GetResult();
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                _output.WriteLine(content);
                 Responses<UserDTOs> freeCodeResponse = JsonConvert.DeserializeObject<Responses<UserDTOs>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
                 Assert.Equal(5, freeCodeResponse.Payload.Count);
@@ -43,15 +44,15 @@ namespace GameStore.Test.Controllers
 
 
         [Theory]
-        [InlineData("B39ACCDD9-161A-4FE0-8A10-310F8C98AD93")]
-        [InlineData("8B4DDF45-3956-486B-A2F6-3FEC1B3D3048")]
-        [InlineData("F5153E60-15B8-468E-97AE-A01E5188F053")]
-        [InlineData("42DFEC91-42C7-49F5-B449-B4E22E895088")]
-        [InlineData("EC1FB6A2-755E-4561-903C-D504845D9475")]
+        [InlineData("B39ACCDD9-161A-4FE0-8A10-310F8C98AD93",49912)]
+        [InlineData("8B4DDF45-3956-486B-A2F6-3FEC1B3D3048", 49913)]
+        [InlineData("F5153E60-15B8-468E-97AE-A01E5188F053", 49914)]
+        [InlineData("42DFEC91-42C7-49F5-B449-B4E22E895088", 49915)]
+        [InlineData("EC1FB6A2-755E-4561-903C-D504845D9475", 49916)]
         [Trait("Account", "AccountE2E")]
-        public void TestGetUserByIdController(string Id)
+        public void TestGetUserByIdController(string Id,int port)
         {
-            Init(49912);
+            Init(port);
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = BASE_URI;

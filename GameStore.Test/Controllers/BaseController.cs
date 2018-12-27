@@ -16,9 +16,10 @@ namespace GameStore.Test.Controllers
 
         public IWebHost _webhost { get; private set; }
 
-        public BaseController(int NoInit)
+        public BaseController(int port)
         {
-            _webhost = null;
+            //_webhost = null;
+            //Init(port);
         }
 
         public BaseController()
@@ -28,19 +29,19 @@ namespace GameStore.Test.Controllers
 
         protected void Init(int port)
         {
-            BASE_URL = $"http://gamestorecrosplatform.azurewebsites.net";
+            BASE_URL = $"http://localhost:{port}";
             BASE_URI = new Uri(BASE_URL);
 
-            //var assemblyName = typeof(GameStore.Startup).GetTypeInfo().Assembly.FullName;
+            var assemblyName = typeof(GameStore.Startup).GetTypeInfo().Assembly.FullName;
 
-            //_webhost = WebHost.CreateDefaultBuilder(null)
-            //                  .UseStartup(assemblyName)
-            //                  .UseEnvironment("Development")
-            //                  .UseKestrel()
-            //                  .UseUrls(BASE_URL)
-            //                  .Build();
+            _webhost = WebHost.CreateDefaultBuilder(null)
+                              .UseStartup(assemblyName)
+                              .UseEnvironment("Development")
+                              .UseKestrel()
+                              .UseUrls(BASE_URL)
+                              .Build();
 
-            //_webhost.Start();
+            _webhost.Start();
         }
 
         public void Dispose()
