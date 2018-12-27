@@ -41,7 +41,7 @@ namespace GameStore
         {
             //if (CurrentEnvironment.IsDevelopment())
             //{
-            //    services.AddDbContext<ApplicationDbContext>(option => option.UseInMemoryDatabase());
+            services.AddDbContext<ApplicationDbContext>(option => option.UseInMemoryDatabase());
 
             //}
             //else
@@ -50,8 +50,8 @@ namespace GameStore
             //  options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             //}
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("SQLServerConnection")));
 
             // services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(
             //Configuration.GetConnectionString("AmazonConnection")));

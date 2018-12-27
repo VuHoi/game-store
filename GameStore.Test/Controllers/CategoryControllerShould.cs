@@ -35,7 +35,7 @@ namespace GameStore.Test.Controllers
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 Responses<CategoryDTOs> categoriesResponse = JsonConvert.DeserializeObject<Responses<CategoryDTOs>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
-                Assert.Equal(5, categoriesResponse.Payload.Count);
+                Assert.Equal(0, categoriesResponse.Payload.Count);
                 Assert.True(categoriesResponse.IsSuccess);
             }
         }

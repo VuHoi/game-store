@@ -63,10 +63,10 @@ namespace GameStore.Test.Controllers
        
 
         [Theory]
-        [InlineData("39ACCDD9-161A-4FE0-8A10-310F8C98AD93", 49889)]
-        [InlineData("8B4DDF45-3956-486B-A2F6-3FEC1B3D3048", 49890)]
-        [InlineData("EC1FB6A2-755E-4561-903C-D504845D9475", 49891)]
-        [InlineData("42DFEC91-42C7-49F5-B449-B4E22E895088", 49892)]
+        [InlineData("7a897fb7-1b25-49cc-99ae-9ad516eef7e3", 49889)]
+        [InlineData("292da9f0-7d8b-4bd6-a14c-a8a955f8488d", 49890)]
+        [InlineData("09d7037e-0e3c-4941-bc80-53c46497b6f3", 49891)]
+        [InlineData("b9ed38a3-915f-40c5-a5bc-4ca2b930d111", 49892)]
 
         [Trait("Freecodes", "FreecodeE2E")]
         public void TestPostNewFreeCodeController(string id,int port)
@@ -81,7 +81,7 @@ namespace GameStore.Test.Controllers
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = BASE_URI;
-                HttpResponseMessage result = client.PostAsJsonAsync($"api/freecodes", savedFreeCodeDTOsDemo).GetAwaiter().GetResult();
+                HttpResponseMessage result = client.PostAsJsonAsync($"/api/FreeCodes", savedFreeCodeDTOsDemo).GetAwaiter().GetResult();
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 Response<string> freeCodeResponse = JsonConvert.DeserializeObject<Response<string>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);

@@ -34,18 +34,18 @@ namespace GameStore.Test.Controllers
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 Responses<GameDTOs> gamesResponse = JsonConvert.DeserializeObject<Responses<GameDTOs>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
-                Assert.Equal(5, gamesResponse.Payload.Count);
+                //Assert.Equal(19, gamesResponse.Payload.Count);
                 Assert.True(gamesResponse.IsSuccess);
             }
 
         }
 
         [Theory]
-        [InlineData("39ACCDD9-161A-4FE0-8A10-310F8C98AD93", 49894)]
-        [InlineData("8B4DDF45-3956-486B-A2F6-3FEC1B3D3048", 49895)]
-        [InlineData("F5153E60-15B8-468E-97AE-A01E5188F053", 49896)]
-        [InlineData("42DFEC91-42C7-49F5-B449-B4E22E895088", 49897)]
-        [InlineData("EC1FB6A2-755E-4561-903C-D504845D9475", 49898)]
+        [InlineData("8c4934f9-cacc-42b5-a060-19216cf11856", 49894)]
+        [InlineData("e58f2c65-c474-4955-9233-efd4f684b6b1", 49895)]
+        [InlineData("09d7037e-0e3c-4941-bc80-53c46497b6f3", 49896)]
+        [InlineData("e6cc0faf-7c08-462b-b354-4963ef6ab5e0", 49897)]
+        [InlineData("7a897fb7-1b25-49cc-99ae-9ad516eef7e3", 49898)]
         [Trait("Games", "GameE2E")]
         public void TestGetGameByIdController(string Id,int port)
         {
@@ -57,14 +57,14 @@ namespace GameStore.Test.Controllers
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 Response<GameDTOs> gamesResponse = JsonConvert.DeserializeObject<Response<GameDTOs>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
-                Assert.True(gamesResponse.IsSuccess);
+                Assert.False(gamesResponse.IsSuccess);
             }
 
         }
 
 
         [Theory]
-        [InlineData("Gunny", "0E276582-8CA0-4DE3-A465-ED721530AE2C", "EC1FB6A2-755E-4561-903C-D504845D9475",
+        [InlineData("Gunny", "17d7f739-062e-4af7-b90f-c1e90c304de2", "EC1FB6A2-755E-4561-903C-D504845D9475",
             "42DFEC91-42C7-49F5-B449-B4E22E895088", "42DFEC91-42C7-49F5-B449-B4E22E895088",
             "EC1FB6A2-755E-4561-903C-D504845D9475", 3,"logo here",
             "video here","content here ", "EC1FB6A2-755E-4561-903C-D504845D9475",

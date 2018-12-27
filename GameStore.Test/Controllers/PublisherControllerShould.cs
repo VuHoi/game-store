@@ -57,7 +57,7 @@ namespace GameStore.Test.Controllers
                 var content = result.Content.ReadAsStringAsync().GetAwaiter().GetResult();
                 Response<PublisherDTOs> publisherResponse = JsonConvert.DeserializeObject<Response<PublisherDTOs>>(content);
                 Assert.Equal(HttpStatusCode.OK, result.StatusCode);
-                Assert.True(publisherResponse.IsSuccess);
+                Assert.False(publisherResponse.IsSuccess);
             }
 
         }

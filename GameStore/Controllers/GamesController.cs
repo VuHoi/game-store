@@ -264,6 +264,33 @@ namespace GameStore.Controllers
             }
         }
 
+        ////[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[HttpDelete("sale")]
+        //public async Task<IServiceResult> DeleteGameSaled()
+        //{
+        //    try
+        //    {
+        //        var game = await _context.Games.SingleOrDefaultAsync(m => m.Id == id);
+        //        if (game == null)
+        //        {
+        //            throw new NotFoundException(nameof(game), id);
+        //        }
+
+        //        _context.Games.Remove(game);
+        //        if (!await _unitOfWork.CompleteAsync())
+        //        {
+        //            throw new SaveFailedException(nameof(game));
+        //        }
+        //        _logger.LogInformation($"Game {game.Name}  has deleted.");
+        //        return new ServiceResult(true, message: $"{game.Name} has deleted");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        _logger.LogError($"Can't delete {id}  because {e.Message}");
+        //        return new ServiceResult(false, message: $"Can't delete {id}  because {e.Message}");
+        //    }
+        //}
+
         private bool GameExists(Guid id)
         {
             return _context.Games.Any(e => e.Id == id);
